@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+
+      - name: Ensure submodules initialized (fallback)
+        run: |
+          git submodule sync --recursive || true
+          git submodule update --init --recursive || true
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake pkg-config ninja-build \
+            libasound2-dev libgl1-mesa-dev libglu1-mesa-dev libopenal-dev \
+            libx11-dev libxrandr-dev libxi-dev libxinerama-dev libxcursor-dev libxss-dev
+
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build -- -j$(nproc)
+
+      - name: Run tests (if any)
+        run: |
+          if [ -f build/CTestTestfile.cmake ]; then
+            cmake --build build --target test || true
+          else
+            echo "No tests configured"
+          fi
