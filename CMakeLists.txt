@@ -10,9 +10,10 @@ add_subdirectory(external/raylib)
 
 add_executable(liminal-ambiente
 	src/main.cpp
-	src/rain.cpp
-	src/tree.cpp
-	src/fog.cpp
+	src/natural_elements/rain.cpp
+	src/natural_elements/tree.cpp
+	src/natural_elements/fog.cpp
+	src/background/sky.cpp
 )
 
 # Ensure our `src` headers are visible to the target

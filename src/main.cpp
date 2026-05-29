@@ -1,8 +1,9 @@
 #include <iostream>
 #include <raylib.h>
-#include "rain.hpp"
-#include "tree.hpp"
-#include "fog.hpp"
+#include "natural_elements/rain.hpp"
+#include "natural_elements/tree.hpp"
+#include "natural_elements/fog.hpp"
+#include "background/sky.hpp"
 
 int main() {
     const int screenWidth = 800;
@@ -24,6 +25,10 @@ int main() {
     Fog fog(0, 0.5*screenHeight, 10, 100, 0.5*screenWidth, screenHeight, FOG_COLOR);
     Fog fog2(0, 0.25*screenHeight, 2, 100, 0.5*screenWidth, 0.75*screenHeight, FOG_COLOR);
 
+    // Create background
+    /* Sky from a rosy pink (hex #FDA6C1) to a light blue (hex #ADD8E6) */
+    Sky sky(0, (Color){255, 182, 193, 255}, (Color){173, 216, 230, 255});
+
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
         rain.update(dt);
@@ -31,7 +36,7 @@ int main() {
         fog2.update(dt);
 
         BeginDrawing();
-        ClearBackground(BLACK);
+        sky.draw();
 
         // Draw a stylized tree at bottom center
         tree.draw();
