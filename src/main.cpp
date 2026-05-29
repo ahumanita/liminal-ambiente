@@ -4,6 +4,7 @@
 #include "natural_elements/tree.hpp"
 #include "natural_elements/fog.hpp"
 #include "background/sky.hpp"
+#include "background/ground.hpp"
 
 int main() {
     const int screenWidth = 800;
@@ -28,6 +29,8 @@ int main() {
     // Create background
     /* Sky from a rosy pink (hex #FDA6C1) to a light blue (hex #ADD8E6) */
     Sky sky(0, (Color){255, 182, 193, 255}, (Color){173, 216, 230, 255});
+    /* Ground as dark green (hex #006400) */
+    Ground ground(120.0f, (Color){0, 100, 0, 255});
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -36,14 +39,15 @@ int main() {
         fog2.update(dt);
 
         BeginDrawing();
+        // Background
         sky.draw();
+        ground.draw();
 
+        // Natural elements
         // Draw a stylized tree at bottom center
         tree.draw();
-
         // Draw rain
         rain.draw();
-
         // Draw fog overlay
         fog.draw();
         fog2.draw();
