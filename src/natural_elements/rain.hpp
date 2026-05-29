@@ -18,12 +18,13 @@ private:
 
 class RainSystem {
 public:
-    RainSystem(int count, int screenW, int screenH);
+    RainSystem(int count, int screenW, int screenH, Color dropColor);
     void update(float dt);
     void draw() const;
 
 private:
     std::vector<RainDrop> drops;
+    Color color;
     int width;
     int height;
 };

@@ -20,15 +20,14 @@ void RainDrop::reset(int width) {
     position.y = -len;
 }
 
-RainSystem::RainSystem(int count, int screenW, int screenH)
-    : width(screenW), height(screenH) {
+RainSystem::RainSystem(int count, int screenW, int screenH, Color dropColor)
+    : width(screenW), height(screenH), color(dropColor) {
     drops.reserve(count);
     for (int i = 0; i < count; ++i) {
         float x = static_cast<float>(GetRandomValue(0, width));
         float y = static_cast<float>(GetRandomValue(-height, height));
         float len = static_cast<float>(GetRandomValue(8, 24));
         float speed = static_cast<float>(GetRandomValue(200, 700));
-        Color dropColor = {200, 200, 255, 180};
         drops.emplace_back(x, y, len, speed, dropColor);
     }
 }

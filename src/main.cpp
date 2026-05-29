@@ -15,16 +15,18 @@ int main() {
     const char *msg = "Hello World";
     const int fontSize = 24;
 
-    /* Pine green background color (hex #01796F) */
+    /* Dark blue rain (hex #00008B) */
+    const Color DARK_BLUE = { 0, 0, 139, 255 };
+    /* Pine green color (hex #01796F) */
     const Color PINE_GREEN = { 1, 121, 111, 255 };
     /* Light gray fog color with some transparency (hex #C8C8C8)*/
     const Color FOG_COLOR = { 200, 200, 200, 180 };
 
     // Create scene elements
-    RainSystem rain(300, screenWidth, screenHeight);
-    Tree tree(screenWidth / 2.0f, screenHeight - 120.0f, 1.0f);
+    RainSystem rain(300, screenWidth, screenHeight, DARK_BLUE);
+    Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
     Fog fog(0, 0.5*screenHeight, 10, 100, 0.5*screenWidth, screenHeight, FOG_COLOR);
-    Fog fog2(0, 0.25*screenHeight, 2, 100, 0.5*screenWidth, 0.75*screenHeight, FOG_COLOR);
+    Fog fog2(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight, FOG_COLOR);
 
     // Create background
     /* Sky from a rosy pink (hex #FDA6C1) to a light blue (hex #ADD8E6) */
@@ -45,7 +47,7 @@ int main() {
 
         // Natural elements
         // Draw a stylized tree at bottom center
-        tree.draw();
+        forest.draw();
         // Draw rain
         rain.draw();
         // Draw fog overlay
