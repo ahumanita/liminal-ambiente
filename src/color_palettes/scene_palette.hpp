@@ -1,14 +1,15 @@
 #pragma once
 #include "color_ramp.hpp"
+#include "color_gradient.hpp"
 #include <cstdint>
 
 struct ScenePalette {
-    ColorRamp skyRamp;
+    ColorGradient skyGradient;
+    ColorGradient groundGradient;
     ColorRamp forestCrownRamp;
     ColorRamp forestTrunkRamp;
     ColorRamp fogRamp;
     ColorRamp rainRamp;
-    ColorRamp grassRamp;
 };
 
 inline Color getColorFromRamp(const ColorRamp &ramp, uint8_t index) {

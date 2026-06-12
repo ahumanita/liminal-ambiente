@@ -18,7 +18,6 @@ add_executable(liminal-ambiente
 	src/color_palettes/palettes/dusk.hpp
 	src/color_palettes/color_ramp.hpp
 	src/color_palettes/scene_palette.hpp
-	src/color_palettes/material.hpp
 
 )
 

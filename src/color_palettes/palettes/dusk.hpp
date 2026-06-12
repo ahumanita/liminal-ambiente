@@ -4,15 +4,13 @@
 class DuskPalette : public ScenePalette {
 public:
     DuskPalette() {
-        skyRamp.colors = {
+        skyGradient.colors = {
             Color{255, 94, 77, 255},   // Light Red
-            Color{255, 140, 105, 255}, // Salmon
-            Color{255, 182, 193, 255}, // Light Pink
-            Color{255, 160, 122, 255}, // Light Salmon
-            Color{255, 127, 80, 255},  // Coral
-            Color{255, 99, 71, 255},   // Tomato
-            Color{255, 69, 0, 255},    // Orange Red
             Color{255, 0, 0, 255}      // Red
+        };
+        groundGradient.colors = {
+            Color{0, 100, 0, 255},     // Dark Green
+            Color{34, 139, 34, 255}    // Forest Green
         };
         forestCrownRamp.colors = {
             Color{85, 107, 47, 255},   // DarkOliveGreen
@@ -53,16 +51,6 @@ public:
             Color{255, 255, 255, 10},
             Color{255, 255, 255, 0},
             Color{255, 255, 255, 0}
-        };
-        grassRamp.colors = {
-            Color{85, 107, 47, 255},   // DarkOliveGreen
-            Color{107, 142, 35, 255},  // OliveDrab
-            Color{154, 205, 50, 255},  // YellowGreen
-            Color{50, 205, 50, 255},   // LimeGreen
-            Color{0, 255, 0, 255},     // Lime
-            Color{124, 252, 0, 255},   // LawnGreen
-            Color{127, 255, 0, 255},   // Chartreuse
-            Color{173, 255, 47, 255}   // GreenYellow
         };
     }
 };

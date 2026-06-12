@@ -16,14 +16,7 @@ int main() {
     const char *msg = "Hello World";
     const int fontSize = 24;
 
-
     const DuskPalette palette; 
-    /* Dark blue rain (hex #00008B) */
-    const Color DARK_BLUE = { 0, 0, 139, 255 };
-    /* Pine green color (hex #01796F) */
-    const Color PINE_GREEN = { 1, 121, 111, 255 };
-    /* Light gray fog color with some transparency (hex #C8C8C8)*/
-    const Color FOG_COLOR = { 200, 200, 200, 180 };
 
     // Create scene elements
     RainSystem rain(300, screenWidth, screenHeight);
@@ -31,10 +24,8 @@ int main() {
     Fog fog(0, 0.5*screenHeight, 75, 100, 0.5*screenWidth, screenHeight);
     Fog fog2(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight);
     // Create background
-    /* Sky from a rosy pink (hex #FDA6C1) to a light blue (hex #ADD8E6) */
-    Sky sky(0, (Color){255, 182, 193, 255}, (Color){173, 216, 230, 255});
-    /* Ground as dark green (hex #006400) */
-    Ground ground(120.0f, (Color){0, 100, 0, 255});
+    Sky sky(0);
+    Ground ground(120.0f);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -44,8 +35,8 @@ int main() {
 
         BeginDrawing();
         // Background
-        sky.draw();
-        ground.draw();
+        sky.draw(palette);
+        ground.draw(palette);
 
         // Natural elements
         // Draw a stylized tree at bottom center
