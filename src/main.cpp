@@ -65,10 +65,7 @@ int main() {
         if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, slider)) {
             float t = (mouse.x - slider.x) / slider.width;
             t = fmaxf(0.0f, fminf(1.0f, t));
-            const float step = 0.05f;
-            env.timeOfDay = roundf(t / step) * step;
-            if (env.timeOfDay < 0.0f) env.timeOfDay = 0.0f;
-            if (env.timeOfDay > 1.0f) env.timeOfDay = 1.0f;
+            env.timeOfDay = t;
         }
         float handleX = slider.x + env.timeOfDay * slider.width;
         DrawRectangle(static_cast<int>(handleX - 6), static_cast<int>(slider.y - 6), 12, 20, LIGHTGRAY);

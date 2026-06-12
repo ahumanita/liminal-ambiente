@@ -10,10 +10,10 @@
 class PaletteManager {
 public:
     PaletteManager() {
-        palettes.push_back(DuskPalette());
-        palettes.push_back(NightPalette());
+        palettes.push_back(NightPalette());        
         palettes.push_back(DawnPalette());
         palettes.push_back(DayPalette());
+        palettes.push_back(DuskPalette());
     }
 
     // Compute an interpolated ScenePalette for the given environment state.

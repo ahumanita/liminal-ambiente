@@ -7,7 +7,7 @@ Sky::Sky(float start_height)
 
 void Sky::draw(const ScenePalette &palette) const {
     // Create a rectangle with a color gradient that is in the background
-    for (int y = 0; y < GetScreenHeight(); ++y) {
+    for (int y = start_height; y < GetScreenHeight(); ++y) {
         float t = static_cast<float>(y) / GetScreenHeight();
         Color blendedColor = {
             static_cast<unsigned char>(palette.skyGradient.colors[0].r * t + palette.skyGradient.colors[1].r * (1 - t)),
