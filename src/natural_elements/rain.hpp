@@ -5,9 +5,9 @@
 
 class RainDrop : public NaturalElement<RainDrop> {
 public:
-    RainDrop(float x, float y, float len, float speed, Color color);
+    RainDrop(float x, float y, float len, float speed, uint8_t colorIndex);
     void update(float dt) override;
-    void draw() const override;
+    void draw(const ScenePalette& palette) const override;
 
     void reset(int width);
 
@@ -18,13 +18,12 @@ private:
 
 class RainSystem {
 public:
-    RainSystem(int count, int screenW, int screenH, Color dropColor);
+    RainSystem(int count, int screenW, int screenH);
     void update(float dt);
-    void draw() const;
+    void draw(const ScenePalette& palette) const;
 
 private:
     std::vector<RainDrop> drops;
-    Color color;
     int width;
     int height;
 };

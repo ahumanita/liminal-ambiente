@@ -1,20 +1,14 @@
 #include "tree.hpp"
-#include <raylib.h>
-#include <iostream>
 
-Tree::Tree(float x, float y, float scale, Color foliageColor, float shadeFactor)
-    : NaturalElement<Tree>(x, y, foliageColor), scale(scale), shadeFactor(shadeFactor) {}
+Tree::Tree(float x, float y, float scale, uint8_t crownColorIndex, uint8_t trunkColorIndex)
+    : NaturalElement<Tree>(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
 
-void Tree::draw() const {
+void Tree::draw(const ScenePalette &palette) const {
     // Trunk
     int trunkW = static_cast<int>(16 * scale);
     int trunkH = static_cast<int>(40 * scale);
     // Draw trunk with a brown color and and scale brightness based on the shadeFactor
-    Color trunkColor = (Color){101, 67, 33, 255};
-    // Adjust color based on the shadeFactor
-    trunkColor.r = static_cast<unsigned char>(trunkColor.r * (1.0f - shadeFactor));
-    trunkColor.g = static_cast<unsigned char>(trunkColor.g * (1.0f - shadeFactor));
-    trunkColor.b = static_cast<unsigned char>(trunkColor.b * (1.0f - shadeFactor));
+    Color trunkColor = getColorFromRamp(palette.forestTrunkRamp, trunkColorIndex);
     DrawRectangle(
         static_cast<int>(position.x - trunkW / 2),
         static_cast<int>(position.y),
@@ -25,12 +19,8 @@ void Tree::draw() const {
 
     // Draw crown color with the specified foliage color and scale brightness based on a 
     // the shadeFactor
-    Color crownColor = color;
-    // Adjust color based on the shadeFactor
-    crownColor.r = static_cast<unsigned char>(crownColor.r * (1.0f - shadeFactor));
-    crownColor.g = static_cast<unsigned char>(crownColor.g * (1.0f - shadeFactor));
-    crownColor.b = static_cast<unsigned char>(crownColor.b * (1.0f - shadeFactor));
-
+    Color crownColor = getColorFromRamp(palette.forestCrownRamp, colorPaletteIndex);
+    
     int s1 = static_cast<int>(80 * scale);
     int s2 = static_cast<int>(56 * scale);
     int s3 = static_cast<int>(40 * scale);
@@ -63,7 +53,6 @@ Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
     // Derive number of trees to place randomly based on density, area size and average tree width
     int area = (upperX - lowerX) * (upperY - lowerY);
     int treeCount = static_cast<int>(area * density / 2); // Assuming average tree occupies 80x80 area
-    std::cout << treeCount << " trees will be generated in the forest." << std::endl;
     trees.reserve(treeCount);
 
     // Initialize trees within the specified area
@@ -71,9 +60,11 @@ Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
         float x = static_cast<float>(GetRandomValue(lowerX, upperX));
         float y = static_cast<float>(GetRandomValue(lowerY, upperY));
         float scale = static_cast<float>(GetRandomValue(5, 15)) / 10.0f; // Random scale between 0.5 and 1.5
-        float shadeFactor = static_cast<float>(GetRandomValue(0, 50)) / 100.0f; // Random shade factor between 0 and 0.5
-        Color PINE_GREEN = {1, 121, 111, 255};
-        trees.emplace_back(x, y, scale, PINE_GREEN, shadeFactor);
+        // Randomly select a crown color index for the tree from the palette
+        uint8_t crownColorIndex = static_cast<uint8_t>(GetRandomValue(0, 7));
+        uint8_t trunkColorIndex = static_cast<uint8_t>(GetRandomValue(0, 7));
+
+        trees.emplace_back(x, y, scale, crownColorIndex, trunkColorIndex);
     }
 
     // Sort trees such that those with higher y (lower on the screen) are drawn last, creating a simple depth effect
@@ -82,8 +73,8 @@ Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
     });
 }
 
-void Forest::draw() const {
+void Forest::draw(const ScenePalette &palette) const {
     for (const auto &tree : trees) {
-        tree.draw();
+        tree.draw(palette);
     }
 }

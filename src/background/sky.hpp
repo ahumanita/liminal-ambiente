@@ -1,14 +1,13 @@
 #pragma once
 #include <vector>
 #include <raylib.h>
+#include "color_palettes/scene_palette.hpp"
 
 class Sky {
 public:
-    Sky(float start_height, Color color_bottom, Color color_top);
-    void draw() const;
+    Sky(float start_height);
+    void draw(const ScenePalette &palette) const;
 
 private:
     float start_height;
-    Color color_bottom;
-    Color color_top;
 };
