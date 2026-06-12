@@ -5,7 +5,7 @@
 #include "natural_elements/fog.hpp"
 #include "background/sky.hpp"
 #include "background/ground.hpp"
-#include "color_palettes/palettes/dusk.hpp"
+#include "color_palettes/palette_manager.hpp"
 
 int main() {
     const int screenWidth = 800;
@@ -16,7 +16,8 @@ int main() {
     const char *msg = "Hello World";
     const int fontSize = 24;
 
-    const DuskPalette palette; 
+    PaletteManager paletteManager;
+    ScenePalette palette = paletteManager.computeCurrentPalette(EnvironmentState{0.5f}); // Example environment state
 
     // Create scene elements
     RainSystem rain(300, screenWidth, screenHeight);
