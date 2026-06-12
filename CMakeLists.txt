@@ -15,6 +15,11 @@ add_executable(liminal-ambiente
 	src/natural_elements/fog.cpp
 	src/background/sky.cpp
 	src/background/ground.cpp
+	src/color_palettes/palettes/dusk.hpp
+	src/color_palettes/color_ramp.hpp
+	src/color_palettes/scene_palette.hpp
+	src/color_palettes/material.hpp
+
 )
 
 # Ensure our `src` headers are visible to the target

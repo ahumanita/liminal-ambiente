@@ -5,6 +5,7 @@
 #include "natural_elements/fog.hpp"
 #include "background/sky.hpp"
 #include "background/ground.hpp"
+#include "color_palettes/palettes/dusk.hpp"
 
 int main() {
     const int screenWidth = 800;
@@ -15,6 +16,8 @@ int main() {
     const char *msg = "Hello World";
     const int fontSize = 24;
 
+
+    const DuskPalette palette; 
     /* Dark blue rain (hex #00008B) */
     const Color DARK_BLUE = { 0, 0, 139, 255 };
     /* Pine green color (hex #01796F) */
@@ -23,11 +26,10 @@ int main() {
     const Color FOG_COLOR = { 200, 200, 200, 180 };
 
     // Create scene elements
-    RainSystem rain(300, screenWidth, screenHeight, DARK_BLUE);
+    RainSystem rain(300, screenWidth, screenHeight);
     Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
-    Fog fog(0, 0.5*screenHeight, 10, 100, 0.5*screenWidth, screenHeight, FOG_COLOR);
-    Fog fog2(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight, FOG_COLOR);
-
+    Fog fog(0, 0.5*screenHeight, 75, 100, 0.5*screenWidth, screenHeight);
+    Fog fog2(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight);
     // Create background
     /* Sky from a rosy pink (hex #FDA6C1) to a light blue (hex #ADD8E6) */
     Sky sky(0, (Color){255, 182, 193, 255}, (Color){173, 216, 230, 255});
@@ -47,12 +49,12 @@ int main() {
 
         // Natural elements
         // Draw a stylized tree at bottom center
-        forest.draw();
+        forest.draw(palette);
         // Draw rain
-        rain.draw();
+        rain.draw(palette);
         // Draw fog overlay
-        fog.draw();
-        fog2.draw();
+        fog.draw(palette);
+        fog2.draw(palette);
 
         // UI text on top
         int textWidth = MeasureText(msg, fontSize);
