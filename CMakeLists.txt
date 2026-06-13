@@ -15,6 +15,7 @@ add_executable(liminal-ambiente
 	src/natural_elements/fog.cpp
 	src/background/sky.cpp
 	src/background/ground.cpp
+	src/background/mountains.cpp
 )
 
 # Ensure our `src` headers are visible to the target

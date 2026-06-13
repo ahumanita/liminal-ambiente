@@ -47,6 +47,14 @@ public:
             return out;
         };
 
+        auto lerpLayers = [&](const ColorLayers &l1, const ColorLayers &l2, float f) {
+            ColorLayers out;
+            for (size_t i = 0; i < out.layers.size(); ++i) {
+                out.layers[i] = lerpColor(l1.layers[i], l2.layers[i], f);
+            }
+            return out;
+        };
+
         auto lerpRamp = [&](const ColorRamp &r1, const ColorRamp &r2, float f) {
             ColorRamp out;
             for (size_t i = 0; i < out.colors.size(); ++i) {
@@ -56,6 +64,7 @@ public:
         };
 
         ScenePalette result;
+        result.mountainLayers = lerpLayers(A.mountainLayers, B.mountainLayers, localT);
         result.skyGradient = lerpGradient(A.skyGradient, B.skyGradient, localT);
         result.groundGradient = lerpGradient(A.groundGradient, B.groundGradient, localT);
         result.forestCrownRamp = lerpRamp(A.forestCrownRamp, B.forestCrownRamp, localT);

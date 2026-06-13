@@ -1,9 +1,9 @@
 #pragma once
-#include "color_ramp.hpp"
-#include "color_gradient.hpp"
+#include "color_structs.hpp"
 #include <cstdint>
 
 struct ScenePalette {
+    ColorLayers mountainLayers;
     ColorGradient skyGradient;
     ColorGradient groundGradient;
     ColorRamp forestCrownRamp;

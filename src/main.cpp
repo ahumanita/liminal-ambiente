@@ -6,6 +6,7 @@
 #include "natural_elements/fog.hpp"
 #include "background/sky.hpp"
 #include "background/ground.hpp"
+#include "background/mountains.hpp"
 #include "color_palettes/palette_manager.hpp"
 
 int main() {
@@ -13,6 +14,8 @@ int main() {
     const int screenHeight = 600;
     InitWindow(screenWidth, screenHeight, "Liminal Ambiente");
     SetTargetFPS(60);
+
+    WindowProperties windowProps(screenWidth, screenHeight, "Liminal Ambiente");
 
     const char *msg = "Hello World";
     const int fontSize = 24;
@@ -33,6 +36,7 @@ int main() {
     // Create background
     Sky sky(0);
     Ground ground(120.0f);
+    Mountains mountains(&windowProps);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -43,6 +47,7 @@ int main() {
         BeginDrawing();
         // Background
         sky.draw(palette);
+        mountains.draw(palette);
         ground.draw(palette);
 
         // Natural elements
