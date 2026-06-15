@@ -5,9 +5,9 @@ class NightPalette : public ScenePalette {
 public:
     NightPalette() {
         mountainLayers.layers = {
-            Color{30, 30, 30, 255}, // Near
-            Color{50, 50, 50, 255}, // Mid
-            Color{70, 70, 70, 255}  // Far
+            Color{12, 16, 22, 255},   // Near almost-black
+            Color{30, 40, 62, 255},   // Mid blue-gray
+            Color{52, 74, 104, 255}   // Far deeper blue haze
         };
         skyGradient.colors = {
             Color{3, 8, 25, 255},    // Midnight navy
