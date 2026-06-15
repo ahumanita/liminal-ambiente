@@ -5,6 +5,11 @@
 class DawnPalette : public ScenePalette {
 public:
     DawnPalette() {
+        mountainLayers.layers = {
+            Color{55, 60, 65, 255},   // Near dawn gray
+            Color{82, 95, 115, 255},  // Mid cool morning
+            Color{108, 130, 155, 255} // Far blue-hinted haze
+        };
         skyGradient.colors = {
             Color{255, 153, 102, 255}, // Soft peach
             Color{110, 170, 210, 255}  // Morning blue

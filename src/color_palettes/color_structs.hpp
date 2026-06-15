@@ -1,0 +1,15 @@
+#pragma once
+#include <array>
+#include <raylib.h>
+
+struct ColorGradient {
+    std::array<Color, 2> colors;
+};
+
+struct ColorLayers {
+    std::array<Color, 3> layers;
+};
+
+struct ColorRamp {
+    std::array<Color, 8> colors;
+};

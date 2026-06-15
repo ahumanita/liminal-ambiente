@@ -4,6 +4,11 @@
 class DuskPalette : public ScenePalette {
 public:
     DuskPalette() {
+        mountainLayers.layers = {
+            Color{45, 50, 55, 255},   // Near dusk gray
+            Color{70, 80, 100, 255},  // Mid twilight blue-gray
+            Color{95, 110, 135, 255}  // Far cool blue haze
+        };
         skyGradient.colors = {
             Color{255, 94, 77, 255},   // Light Red
             Color{255, 0, 0, 255}      // Red

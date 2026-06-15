@@ -5,6 +5,11 @@
 class DayPalette : public ScenePalette {
 public:
     DayPalette() {
+        mountainLayers.layers = {
+            Color{78, 80, 85, 255},   // Near rough gray
+            Color{98, 108, 125, 255}, // Mid muted blue-gray
+            Color{124, 140, 170, 255} // Far softened blue haze
+        };
         skyGradient.colors = {
             Color{135, 206, 235, 255}, // SkyBlue
             Color{80, 160, 235, 255}
