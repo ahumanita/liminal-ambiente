@@ -36,15 +36,15 @@ void createLayerRidgeLine(MountainLayer& layer, int numRidgePoints, float spread
     layer.ridgeLine = ridgeLine;
 }
 
-Mountains::Mountains(WindowProperties* props) : windowProps(props) {
+Mountains::Mountains(const WindowProperties& props) : windowProps(props) {
     // Get screen width
-    int screenWidth = windowProps->width;
+    int screenWidth = windowProps.width;
     // Compute horizontal spread factor based on number of segments
     float spread = static_cast<float>(screenWidth) / (numRidgePoints - 1);
 
     for(size_t i = 0; i < numLayers; i++) {
         MountainLayer layer;
-        layer.baseElevation = windowProps->height - 200.0f - i * 100.0f; // Base elevation for each layer
+        layer.baseElevation = windowProps.height - 200.0f - i * 100.0f; // Base elevation for each layer
         layer.amplitude = 50.0f + i * 20.0f; // Amplitude for height variation
         createLayerRidgeLine(layer, numRidgePoints, spread, 20, numRefinements);
         layers.push_back(layer);
@@ -53,7 +53,7 @@ Mountains::Mountains(WindowProperties* props) : windowProps(props) {
 
 Mountains::~Mountains() {}
 
-void Mountains::draw(ScenePalette& palette) {
+void Mountains::draw(const ScenePalette& palette) {
     // Draw layers from back to front, note that layer_idx starts at layers.size()-1
     for (size_t layer_idx = layers.size(); layer_idx-- > 0 ;) {
         // Use corresponding color from palette for each layer
@@ -66,11 +66,11 @@ void Mountains::draw(ScenePalette& palette) {
             // Define corresponding bottom vertices at the bottom of the screen
             Vector2 leftBottom{
                 leftTop.x,
-                static_cast<float>(windowProps->height)
+                static_cast<float>(windowProps.height)
             };
             Vector2 rightBottom{
                 rightTop.x,
-                static_cast<float>(windowProps->height)
+                static_cast<float>(windowProps.height)
             };
             // Draw the mountain segment as two triangles
             DrawTriangle(

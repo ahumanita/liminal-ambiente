@@ -36,7 +36,7 @@ int main() {
     // Create background
     Sky sky(0);
     Ground ground(120.0f);
-    Mountains mountains(&windowProps);
+    Mountains mountains(windowProps);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
