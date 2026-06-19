@@ -36,7 +36,7 @@ void createLayerRidgeLine(MountainLayer& layer, int numRidgePoints, float spread
     layer.ridgeLine = ridgeLine;
 }
 
-Mountains::Mountains(const WindowProperties& props) : windowProps(props) {
+Mountains::Mountains(const WindowProperties& props, const ScenePalette& palette) : windowProps(props), numLayers(palette.mountainLayers.layers.size()) {
     // Get screen width
     int screenWidth = windowProps.width;
     // Compute horizontal spread factor based on number of segments
