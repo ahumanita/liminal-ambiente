@@ -36,7 +36,7 @@ void createLayerRidgeLine(MountainLayer& layer, int numRidgePoints, float spread
     layer.ridgeLine = ridgeLine;
 }
 
-Mountains::Mountains(const WindowProperties& props, const ScenePalette& palette) : windowProps(props), numLayers(palette.mountainLayers.layers.size()) {
+Mountains::Mountains(const WindowProperties& props, const ScenePalette& palette) : windowProps(props), numLayers(palette.mountainLayers.colors.size()) {
     // Get screen width
     int screenWidth = windowProps.width;
     // Compute horizontal spread factor based on number of segments
@@ -57,7 +57,7 @@ void Mountains::draw(const ScenePalette& palette) {
     // Draw layers from back to front, note that layer_idx starts at layers.size()-1
     for (size_t layer_idx = layers.size(); layer_idx-- > 0 ;) {
         // Use corresponding color from palette for each layer
-        Color color = palette.mountainLayers.layers[layer_idx];
+        Color color = palette.mountainLayers.colors[layer_idx];
         for (std::size_t j = 0; j < layers[layer_idx].ridgeLine.size() - 1; j++)
         {
             // Get the top vertices of the current mountain segment

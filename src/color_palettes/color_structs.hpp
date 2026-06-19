@@ -7,7 +7,7 @@ struct ColorGradient {
 };
 
 struct ColorLayers {
-    std::array<Color, 3> layers;
+    std::array<Color, 3> colors;
 };
 
 struct ColorRamp {

@@ -4,7 +4,7 @@
 class NightPalette : public ScenePalette {
 public:
     NightPalette() {
-        mountainLayers.layers = {
+        mountainLayers.colors = {
             Color{12, 16, 22, 255},   // Near almost-black
             Color{30, 40, 62, 255},   // Mid blue-gray
             Color{52, 74, 104, 255}   // Far deeper blue haze
