@@ -5,7 +5,7 @@
 
 namespace liminal {
 
-class Fog : public NaturalElement<Fog> {
+class Fog : public NaturalElement {
 public:
     Fog(float x, float y, float speed, float alpha, float width, float height);
     void update(float dt) override;

@@ -10,7 +10,6 @@ namespace liminal {
 // Base class for natural scene elements such as trees and raindrops.
 // The template parameter is used to create a reusable NaturalElement base
 // while still allowing derived types to be named naturally.
-template <typename Derived>
 class NaturalElement {
 protected:
     Vector2 position;

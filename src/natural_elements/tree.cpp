@@ -3,7 +3,7 @@
 namespace liminal {
 
 Tree::Tree(float x, float y, float scale, uint8_t crownColorIndex, uint8_t trunkColorIndex)
-    : NaturalElement<Tree>(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
+    : NaturalElement(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
 
 void Tree::draw(const ScenePalette &palette) const {
     // Trunk

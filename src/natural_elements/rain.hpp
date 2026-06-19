@@ -5,7 +5,7 @@
 
 namespace liminal {
 
-class RainDrop : public NaturalElement<RainDrop> {
+class RainDrop : public NaturalElement {
 public:
     RainDrop(float x, float y, float len, float speed, uint8_t colorIndex);
     void update(float dt) override;

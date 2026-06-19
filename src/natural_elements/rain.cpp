@@ -5,7 +5,7 @@
 namespace liminal {
 
 RainDrop::RainDrop(float x, float y, float len, float speed, uint8_t colorIndex)
-    : NaturalElement<RainDrop>(x, y, colorIndex), len(len), speed(speed) {}
+    : NaturalElement(x, y, colorIndex), len(len), speed(speed) {}
 
 void RainDrop::update(float dt) {
     position.y += speed * dt;

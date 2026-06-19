@@ -7,7 +7,7 @@
 
 namespace liminal {
 
-class Tree : public NaturalElement<Tree> {
+class Tree : public NaturalElement {
 public:
     Tree(float x, float y, float scale = 1.0f, uint8_t crownColorIndex = 0, uint8_t trunkColorIndex = 0);
     void draw(const ScenePalette &palette) const override;
