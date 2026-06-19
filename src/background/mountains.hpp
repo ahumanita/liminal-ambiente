@@ -16,10 +16,10 @@ struct MountainLayer {
 
 class Mountains {
 public:
-    Mountains(const WindowProperties& props, const ScenePalette& palette);
+    Mountains(const WindowProperties& props, const ScenePalette& palette) noexcept;
     ~Mountains();
 
-    void draw(const ScenePalette& palette);
+    void draw(const ScenePalette& palette) const noexcept;
 
 private:
     const WindowProperties& windowProps; // To access screen dimensions for drawing

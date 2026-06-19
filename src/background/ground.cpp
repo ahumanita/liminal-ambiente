@@ -4,10 +4,10 @@
 
 namespace liminal {
 
-Ground::Ground(float height)
+Ground::Ground(float height) noexcept
     : height(height) {}
 
-void Ground::draw(const ScenePalette &palette) const {
+void Ground::draw(const ScenePalette &palette) const noexcept {
     // Create a rectangle with a color gradient that is in the background
     for (int y = 0; y < height; ++y) {
         float t = static_cast<float>(y) / height;

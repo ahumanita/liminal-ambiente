@@ -26,7 +26,7 @@ struct ColorRamp {
  * @param f The interpolation factor (0.0 to 1.0)
  * @return The interpolated color
  */
-inline Color lerpColor(const Color &a, const Color &b, float f) {
+inline Color lerpColor(const Color &a, const Color &b, float f) noexcept {
     auto mix = [f](unsigned char x, unsigned char y) -> unsigned char {
         int v = static_cast<int>(std::lround((1.0f - f) * x + f * y));
         v = std::clamp(v, 0, 255);
@@ -45,7 +45,7 @@ inline Color lerpColor(const Color &a, const Color &b, float f) {
  * @return A new ColorStruct with each color interpolated between r1 and r2 by
  */
 template <class ColorStruct>
-ColorStruct lerpColorStruct(const ColorStruct &r1, const ColorStruct &r2, float f) {
+ColorStruct lerpColorStruct(const ColorStruct &r1, const ColorStruct &r2, float f) noexcept {
     ColorStruct out;
     for (size_t i = 0; i < out.colors.size(); ++i) {
         out.colors[i] = lerpColor(r1.colors[i], r2.colors[i], f);
