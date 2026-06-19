@@ -16,7 +16,7 @@ struct MountainLayer {
 
 class Mountains {
 public:
-    Mountains(const WindowProperties& props, const ScenePalette& palette) noexcept;
+    Mountains(const WindowProperties& props, const ScenePalette& palette);
     ~Mountains();
 
     void draw(const ScenePalette& palette) const noexcept;

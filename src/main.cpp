@@ -70,9 +70,9 @@ int main() {
         DrawRectangleRec(slider, DARKGRAY);
         Vector2 mouse = GetMousePosition();
         if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, slider)) {
-            float t = (mouse.x - slider.x) / slider.width;
-            t = fmaxf(0.0f, fminf(1.0f, t));
-            env.timeOfDay = t;
+            float sliderT = (mouse.x - slider.x) / slider.width;
+            sliderT = fmaxf(0.0f, fminf(1.0f, sliderT));
+            env.timeOfDay = sliderT;
         }
         float handleX = slider.x + env.timeOfDay * slider.width;
         DrawRectangle(static_cast<int>(handleX - 6), static_cast<int>(slider.y - 6), 12, 20, LIGHTGRAY);

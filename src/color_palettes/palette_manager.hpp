@@ -23,25 +23,25 @@ public:
         if (palettes.empty()) return ScenePalette();
 
         // Map timeOfDay [0,1) across the palette list circularly.
-        float t = std::clamp(environmentState.timeOfDay, 0.0f, 1.0f);
-        float scaled = t * static_cast<float>(palettes.size());
-        int idx = static_cast<int>(std::floor(scaled)) % static_cast<int>(palettes.size());
+        float timeOfDayNorm = std::clamp(environmentState.timeOfDay, 0.0f, 1.0f);
+        float scaledTime = timeOfDayNorm * static_cast<float>(palettes.size());
+        int currentIndex = static_cast<int>(std::floor(scaledTime)) % static_cast<int>(palettes.size());
         // Ensure that the current palette index is between 0 and 3
-        if (idx < 0) idx += static_cast<int>(palettes.size());
-        int next = (idx + 1) % static_cast<int>(palettes.size());
-        float localT = std::clamp(scaled - std::floor(scaled), 0.0f, 1.0f);
+        if (currentIndex < 0) currentIndex += static_cast<int>(palettes.size());
+        int nextIndex = (currentIndex + 1) % static_cast<int>(palettes.size());
+        float localFactor = std::clamp(scaledTime - std::floor(scaledTime), 0.0f, 1.0f);
 
-        const ScenePalette &A = palettes[idx];
-        const ScenePalette &B = palettes[next];
+        const ScenePalette &A = palettes[currentIndex];
+        const ScenePalette &B = palettes[nextIndex];
 
         ScenePalette result;
-        result.mountainLayers = lerpColorStruct<ColorLayers>(A.mountainLayers, B.mountainLayers, localT);
-        result.skyGradient = lerpColorStruct<ColorGradient>(A.skyGradient, B.skyGradient, localT);
-        result.groundGradient = lerpColorStruct<ColorGradient>(A.groundGradient, B.groundGradient, localT);
-        result.forestCrownRamp = lerpColorStruct<ColorRamp>(A.forestCrownRamp, B.forestCrownRamp, localT);
-        result.forestTrunkRamp = lerpColorStruct<ColorRamp>(A.forestTrunkRamp, B.forestTrunkRamp, localT);
-        result.fogRamp = lerpColorStruct<ColorRamp>(A.fogRamp, B.fogRamp, localT);
-        result.rainRamp = lerpColorStruct<ColorRamp>(A.rainRamp, B.rainRamp, localT);
+        result.mountainLayers = lerpColorStruct<ColorLayers>(A.mountainLayers, B.mountainLayers, localFactor);
+        result.skyGradient = lerpColorStruct<ColorGradient>(A.skyGradient, B.skyGradient, localFactor);
+        result.groundGradient = lerpColorStruct<ColorGradient>(A.groundGradient, B.groundGradient, localFactor);
+        result.forestCrownRamp = lerpColorStruct<ColorRamp>(A.forestCrownRamp, B.forestCrownRamp, localFactor);
+        result.forestTrunkRamp = lerpColorStruct<ColorRamp>(A.forestTrunkRamp, B.forestTrunkRamp, localFactor);
+        result.fogRamp = lerpColorStruct<ColorRamp>(A.fogRamp, B.fogRamp, localFactor);
+        result.rainRamp = lerpColorStruct<ColorRamp>(A.rainRamp, B.rainRamp, localFactor);
 
         return result;
     }
