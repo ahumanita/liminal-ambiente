@@ -1,8 +1,12 @@
+#pragma once
+
 #include <raylib.h>
 #include <vector>
 
 #include "color_palettes/scene_palette.hpp"
 #include "gui/window_properties.hpp"
+
+namespace liminal {
 
 struct MountainLayer {
     float baseElevation;
@@ -24,3 +28,5 @@ private:
     int numLayers;          // Number of mountain layers (based on palette)
     std::vector<MountainLayer> layers; // Store properties for each mountain layer
 };
+
+} // namespace liminal

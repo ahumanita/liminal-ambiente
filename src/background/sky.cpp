@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <cstdlib>
 
+namespace liminal {
+
 Sky::Sky(float start_height)
     : start_height(start_height) {}
 
@@ -18,3 +20,5 @@ void Sky::draw(const ScenePalette &palette) const {
         DrawLine(0, y, GetScreenWidth(), y, blendedColor);
     }
 }
+
+} // namespace liminal

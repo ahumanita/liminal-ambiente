@@ -1,3 +1,5 @@
+namespace liminal {
+
 struct WindowProperties {
     int width;
     int height;
@@ -5,3 +7,5 @@ struct WindowProperties {
 
     WindowProperties(int w, int h, const char* t) : width(w), height(h), title(t) {}
 };
+
+} // namespace liminal

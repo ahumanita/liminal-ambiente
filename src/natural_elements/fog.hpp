@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include "natural_element.hpp"
 
+namespace liminal {
+
 class Fog : public NaturalElement<Fog> {
 public:
     Fog(float x, float y, float speed, float alpha, float width, float height);
@@ -17,3 +19,5 @@ private:
     float height;
     float width;
 };
+
+} // namespace liminal

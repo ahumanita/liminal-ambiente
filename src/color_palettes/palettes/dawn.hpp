@@ -2,6 +2,8 @@
 #include "color_palettes/scene_palette.hpp"
 #include <raylib.h>
 
+namespace liminal {
+
 class DawnPalette : public ScenePalette {
 public:
     DawnPalette() {
@@ -65,3 +67,5 @@ public:
         };
     }
 };
+
+} // namespace liminal

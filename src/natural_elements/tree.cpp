@@ -1,5 +1,7 @@
 #include "tree.hpp"
 
+namespace liminal {
+
 Tree::Tree(float x, float y, float scale, uint8_t crownColorIndex, uint8_t trunkColorIndex)
     : NaturalElement<Tree>(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
 
@@ -78,3 +80,5 @@ void Forest::draw(const ScenePalette &palette) const {
         tree.draw(palette);
     }
 }
+
+} // namespace liminal

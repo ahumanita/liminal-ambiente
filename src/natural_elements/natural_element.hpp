@@ -5,6 +5,8 @@
 #include <raylib.h>
 #include <cstdint>
 
+namespace liminal {
+
 // Base class for natural scene elements such as trees and raindrops.
 // The template parameter is used to create a reusable NaturalElement base
 // while still allowing derived types to be named naturally.
@@ -29,3 +31,5 @@ public:
     uint8_t getColorPaletteIndex() const { return colorPaletteIndex; }
     void setColorPaletteIndex(uint8_t newIndex) { colorPaletteIndex = newIndex; }
 };
+
+} // namespace liminal

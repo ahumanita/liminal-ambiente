@@ -9,6 +9,8 @@
 #include "background/mountains.hpp"
 #include "color_palettes/palette_manager.hpp"
 
+using namespace liminal;
+
 int main() {
     const int screenWidth = 800;
     const int screenHeight = 600;

@@ -1,6 +1,8 @@
 #include "color_palettes/scene_palette.hpp"
 #include <raylib.h>
 
+namespace liminal {
+
 class NightPalette : public ScenePalette {
 public:
     NightPalette() {
@@ -59,3 +61,5 @@ public:
         };
     }
 };
+
+} // namespace liminal

@@ -1,6 +1,8 @@
 #include "mountains.hpp"
 #include <iostream>
 
+namespace liminal {
+
 void createLayerRidgeLine(MountainLayer& layer, int numRidgePoints, float spread, int offset, int numRefinements) {
     std::vector<Vector2> ridgeLine;
     ridgeLine.reserve(numRidgePoints*numRefinements); // Reserve enough space for all refinements
@@ -86,3 +88,5 @@ void Mountains::draw(const ScenePalette& palette) {
         }
     }
 }
+
+} // namespace liminal

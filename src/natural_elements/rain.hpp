@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include "natural_element.hpp"
 
+namespace liminal {
+
 class RainDrop : public NaturalElement<RainDrop> {
 public:
     RainDrop(float x, float y, float len, float speed, uint8_t colorIndex);
@@ -27,3 +29,5 @@ private:
     int width;
     int height;
 };
+
+} // namespace liminal

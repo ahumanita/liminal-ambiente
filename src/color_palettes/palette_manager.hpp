@@ -1,12 +1,14 @@
 #include <vector>
 #include <cmath>
 
+#include "color_palettes/scene_palette.hpp"
 #include "color_palettes/palettes/dusk.hpp"
 #include "color_palettes/palettes/night.hpp"
 #include "color_palettes/palettes/dawn.hpp"
 #include "color_palettes/palettes/day.hpp"
 #include "color_palettes/environment_state.hpp"
 
+namespace liminal {
 
 /**
  * Linearly interpolate between two colors a and b by factor f (0.0 to 1.0).
@@ -25,6 +27,14 @@ Color lerpColor(const Color &a, const Color &b, float f) {
 };
 
 
+/**
+ * Linearly interpolate each color contained in two instances of the ColorStruct type.
+ * 
+ * @param r1 The first ColorStruct (when f=0.0)
+ * @param r2 The second ColorStruct (when f=1.0)
+ * @param f The interpolation factor (0.0 to 1.0)
+ * @return A new ColorStruct with each color interpolated between r1 and r2 by
+ */
 template <class ColorStruct>
 ColorStruct lerpColorStruct(const ColorStruct &r1, const ColorStruct &r2, float f) {
     ColorStruct out;
@@ -76,3 +86,5 @@ public:
 private:
     std::vector<ScenePalette> palettes;
 };
+
+} // namespace liminal

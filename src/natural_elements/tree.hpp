@@ -5,6 +5,8 @@
 
 #include "natural_element.hpp"
 
+namespace liminal {
+
 class Tree : public NaturalElement<Tree> {
 public:
     Tree(float x, float y, float scale = 1.0f, uint8_t crownColorIndex = 0, uint8_t trunkColorIndex = 0);
@@ -28,3 +30,5 @@ private:
     int upperY;
     float density;   
 };
+
+} // namespace liminal

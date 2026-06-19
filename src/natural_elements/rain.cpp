@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <cstdlib>
 
+namespace liminal {
+
 RainDrop::RainDrop(float x, float y, float len, float speed, uint8_t colorIndex)
     : NaturalElement<RainDrop>(x, y, colorIndex), len(len), speed(speed) {}
 
@@ -48,3 +50,5 @@ void RainSystem::draw(const ScenePalette& palette) const {
         d.draw(palette);
     }
 }
+
+} // namespace liminal

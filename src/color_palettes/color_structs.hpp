@@ -2,6 +2,8 @@
 #include <array>
 #include <raylib.h>
 
+namespace liminal {
+
 struct ColorGradient {
     std::array<Color, 2> colors;
 };
@@ -13,3 +15,5 @@ struct ColorLayers {
 struct ColorRamp {
     std::array<Color, 8> colors;
 };
+
+} // namespace liminal
