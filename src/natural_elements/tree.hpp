@@ -10,7 +10,8 @@ namespace liminal {
 class Tree : public NaturalElement {
 public:
     Tree(float x, float y, float scale = 1.0f, uint8_t crownColorIndex = 0, uint8_t trunkColorIndex = 0);
-    void draw(const ScenePalette &palette) const override;
+    float getScale() const {return scale;}
+    uint8_t getTrunkColorIndex() const {return trunkColorIndex;}
 
 private:
     float scale;
@@ -20,7 +21,7 @@ private:
 class Forest {
 public:
     Forest(int lowerX, int upperX, int lowerY, int upperY, float density);
-    void draw(const ScenePalette &palette) const;
+    std::vector<Tree> getTrees() const {return trees;}
 
 private:    
     std::vector<Tree> trees;

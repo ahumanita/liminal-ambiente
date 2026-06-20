@@ -32,14 +32,13 @@ int main() {
     // Create scene elements
     RainSystem rain(300, screenWidth, screenHeight);
     Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
-    Fog fog(0, 0.5*screenHeight, 75, 100, 0.5*screenWidth, screenHeight);
-    Fog fog2(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight);
+    Fog fog(0, 0.25*screenHeight, 2, 50, 0.5*screenWidth, 0.75*screenHeight);
     // Create background
     Sky sky(0);
     Ground ground(120.0f);
     Mountains mountains(windowProps, palette);
 
-    Scene scene(mountains, sky, ground);
+    Scene scene(mountains, sky, ground, rain, forest, fog);
 
     // GUI elements
     Slider timeOfDaySlider(20, screenHeight - 40, 300, 8, env.timeOfDay, "Time of Day");
@@ -51,20 +50,10 @@ int main() {
         float dt = GetFrameTime();
         rain.update(dt);
         fog.update(dt);
-        fog2.update(dt);
 
         BeginDrawing();
    
         renderer.render(scene, palette);
-
-        // Natural elements
-        // Draw a stylized tree at bottom center
-        forest.draw(palette);
-        // Draw rain
-        rain.draw(palette);
-        // Draw fog overlay
-        fog.draw(palette);
-        fog2.draw(palette);
 
         // UI text on top
         int textWidth = MeasureText(msg, fontSize);

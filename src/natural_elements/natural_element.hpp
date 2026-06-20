@@ -22,7 +22,6 @@ public:
     virtual ~NaturalElement() = default;
 
     virtual void update(float dt) { (void)dt; }
-    virtual void draw(const ScenePalette &palette) const = 0;
 
     Vector2 getPosition() const { return position; }
     void setPosition(float x, float y) { position.x = x; position.y = y; }

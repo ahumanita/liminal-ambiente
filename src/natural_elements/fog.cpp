@@ -11,11 +11,6 @@ void Fog::update(float dt) {
     position.x += speed * dt;
 }
 
-void Fog::draw(const ScenePalette& palette) const {
-    Color color = getColorFromRamp(palette.fogRamp, colorPaletteIndex);
-    DrawRectangle(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(width), static_cast<int>(height), color);
-}
-
 void Fog::reset(int width) {
     position.x = static_cast<float>(GetRandomValue(0, width));
     position.y = static_cast<float>(GetRandomValue(0, height));

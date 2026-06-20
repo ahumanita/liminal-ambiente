@@ -9,9 +9,10 @@ class Fog : public NaturalElement {
 public:
     Fog(float x, float y, float speed, float alpha, float width, float height);
     void update(float dt) override;
-    void draw(const ScenePalette& palette) const override;
-
     void reset(int width);
+
+    float getWidth() const {return width;}
+    float getHeight() const {return height;}
 
 private:
     float speed;

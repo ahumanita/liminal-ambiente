@@ -11,8 +11,11 @@ struct Scene {
     Mountains mountains;
     Sky sky;
     Ground ground;
+    RainSystem rain;
+    Forest forest;
+    Fog fog;
 
-    Scene(const Mountains m, const Sky s, const Ground g) : mountains(m), sky(s), ground(g) {}
+    Scene(const Mountains m, const Sky s, const Ground g, const RainSystem r, const Forest f, const Fog fog) : mountains(m), sky(s), ground(g), rain(r), forest(f), fog(fog) {}
 };
 
 class Renderer {
@@ -21,7 +24,9 @@ public:
     void drawMountains(const Mountains& mountains, const ScenePalette& palette) const noexcept;
     void drawSky(const Sky& sky, const ScenePalette& palette) const noexcept;
     void drawGround(const Ground& ground, const ScenePalette& palette) const noexcept;
-    // void drawNaturalElements(const std::vector<NaturalElement*>& elements, const ScenePalette& palette) const noexcept;
+    void drawForest(const Forest& forest, const ScenePalette& palette) const noexcept;
+    void drawRainSystem(const RainSystem& rain, const ScenePalette& palette) const noexcept;
+    void drawFog(const Fog& fog, const ScenePalette& palette) const noexcept;
     void render(const Scene scene, const ScenePalette& palette) const noexcept;
 
 private:
@@ -83,11 +88,91 @@ void Renderer::drawGround(const Ground& g, const ScenePalette& palette) const no
     }
 }
 
+void Renderer::drawRainSystem(const RainSystem& rain, const ScenePalette& palette) const noexcept {
+    const auto drops = rain.getRainDrops();
+    for (const auto &rain_drop : drops) {
+        const auto position = rain_drop.getPosition();
+        const auto length = rain_drop.getLength();
+        const auto paletteIndex = rain_drop.getColorPaletteIndex();
+
+        Vector2 start = { position.x, position.y };
+        Vector2 end = { position.x, position.y + length };
+        Color dropColor = getColorFromRamp(palette.rainRamp, paletteIndex);
+        DrawLineEx(start, end, 1.0f, dropColor);
+    }
+}
+
+void Renderer::drawForest(const Forest& forest, const ScenePalette& palette) const noexcept {
+    const auto trees = forest.getTrees();
+    for (const auto &tree : trees) {
+        // Get data
+        const auto position = tree.getPosition();
+        const auto scale = tree.getScale();
+        const auto trunkPaleteIndex = tree.getTrunkColorIndex();
+        const auto crownPaletteIndex = tree.getColorPaletteIndex();
+        // Trunk
+        int trunkW = static_cast<int>(16 * scale);
+        int trunkH = static_cast<int>(40 * scale);
+        // Draw trunk with a brown color and and scale brightness based on the shadeFactor
+        Color trunkColor = getColorFromRamp(palette.forestTrunkRamp, trunkPaleteIndex);
+        DrawRectangle(
+            static_cast<int>(position.x - trunkW / 2),
+            static_cast<int>(position.y),
+            trunkW,
+            trunkH,
+            trunkColor
+        );
+
+        // Draw crown color with the specified foliage color and scale brightness based on a 
+        // the shadeFactor
+        Color crownColor = getColorFromRamp(palette.forestCrownRamp, crownPaletteIndex);
+        
+        int s1 = static_cast<int>(80 * scale);
+        int s2 = static_cast<int>(56 * scale);
+        int s3 = static_cast<int>(40 * scale);
+
+        Vector2 b1[3] = {
+            {position.x - s1 / 2.0f, position.y},
+            {position.x + s1 / 2.0f, position.y},
+            {position.x, position.y - 48.0f * scale}
+        };
+        DrawTriangle(b1[0], b1[1], b1[2], crownColor);
+
+        Vector2 b2[3] = {
+            {position.x - s2 / 2.0f, position.y - 28.0f * scale},
+            {position.x + s2 / 2.0f, position.y - 28.0f * scale},
+            {position.x, position.y - 80.0f * scale}
+        };
+        DrawTriangle(b2[0], b2[1], b2[2], crownColor);
+
+        Vector2 b3[3] = {
+            {position.x - s3 / 2.0f, position.y - 52.0f * scale},
+            {position.x + s3 / 2.0f, position.y - 52.0f * scale},
+            {position.x, position.y - 108.0f * scale}
+        };
+        DrawTriangle(b3[0], b3[1], b3[2], crownColor);
+    }
+}
+
+void Renderer::drawFog(const Fog& fog, const ScenePalette& palette) const noexcept {
+    const auto colorPaletteIndex = fog.getColorPaletteIndex();
+    const auto position = fog.getPosition();
+    const auto width = fog.getWidth();
+    const auto height = fog.getHeight();
+
+    Color color = getColorFromRamp(palette.fogRamp, colorPaletteIndex);
+    DrawRectangle(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(width), static_cast<int>(height), color);
+}
+
 void Renderer::render(const Scene scene, const ScenePalette& palette) const noexcept {
     // Draw the background
     drawSky(scene.sky, palette);
     drawMountains(scene.mountains, palette);
     drawGround(scene.ground, palette);
+    // Draw the natural elements
+    drawForest(scene.forest, palette);
+    drawRainSystem(scene.rain, palette);
+    drawFog(scene.fog, palette);
 }
 
 } // namespace liminal

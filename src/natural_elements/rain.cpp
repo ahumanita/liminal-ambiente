@@ -11,13 +11,6 @@ void RainDrop::update(float dt) {
     position.y += speed * dt;
 }
 
-void RainDrop::draw(const ScenePalette& palette) const {
-    Vector2 start = { position.x, position.y };
-    Vector2 end = { position.x, position.y + len };
-    Color dropColor = getColorFromRamp(palette.rainRamp, colorPaletteIndex);
-    DrawLineEx(start, end, 1.0f, dropColor);
-}
-
 void RainDrop::reset(int width) {
     position.x = static_cast<float>(GetRandomValue(0, width));
     position.y = -len;
@@ -42,12 +35,6 @@ void RainSystem::update(float dt) {
         if (d.getPosition().y > height) {
             d.reset(width);
         }
-    }
-}
-
-void RainSystem::draw(const ScenePalette& palette) const {
-    for (const auto &d : drops) {
-        d.draw(palette);
     }
 }
 
