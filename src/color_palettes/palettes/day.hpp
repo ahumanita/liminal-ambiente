@@ -2,10 +2,12 @@
 #include "color_palettes/scene_palette.hpp"
 #include <raylib.h>
 
+namespace liminal {
+
 class DayPalette : public ScenePalette {
 public:
     DayPalette() {
-        mountainLayers.layers = {
+        mountainLayers.colors = {
             Color{78, 80, 85, 255},   // Near rough gray
             Color{98, 108, 125, 255}, // Mid muted blue-gray
             Color{124, 140, 170, 255} // Far softened blue haze
@@ -65,3 +67,5 @@ public:
         };
     }
 };
+
+} // namespace liminal

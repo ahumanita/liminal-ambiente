@@ -1,8 +1,16 @@
+#pragma once
+
 #include <raylib.h>
 #include <vector>
 
 #include "color_palettes/scene_palette.hpp"
-#include "gui/window_properties.hpp"
+// only include window properties if not already defined
+#ifndef WINDOW_PROPERTIES_HPP_
+#define WINDOW_PROPERTIES_HPP_
+    #include "gui/window_properties.hpp"
+#endif
+
+namespace liminal {
 
 struct MountainLayer {
     float baseElevation;
@@ -12,15 +20,17 @@ struct MountainLayer {
 
 class Mountains {
 public:
-    Mountains(const WindowProperties& props);
+    Mountains(const WindowProperties& props, const ScenePalette& palette);
     ~Mountains();
 
-    void draw(const ScenePalette& palette);
+    std::vector<MountainLayer> getLayers() const { return layers; }
 
 private:
     const WindowProperties& windowProps; // To access screen dimensions for drawing
     int numRidgePoints = 8; // Number of control points for the ridge line
     int numRefinements = 3; // Number of times to refine the ridge line for smoother mountains
-    int numLayers = 3; // Number of mountain layers 
+    int numLayers;          // Number of mountain layers (based on palette)
     std::vector<MountainLayer> layers; // Store properties for each mountain layer
 };
+
+} // namespace liminal

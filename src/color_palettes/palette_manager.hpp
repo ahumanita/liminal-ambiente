@@ -1,15 +1,16 @@
-#include <vector>
-#include <cmath>
-
+#pragma once
+#include "color_palettes/scene_palette.hpp"
 #include "color_palettes/palettes/dusk.hpp"
 #include "color_palettes/palettes/night.hpp"
 #include "color_palettes/palettes/dawn.hpp"
 #include "color_palettes/palettes/day.hpp"
 #include "color_palettes/environment_state.hpp"
 
+namespace liminal {
+
 class PaletteManager {
 public:
-    PaletteManager() {
+    PaletteManager(EnvironmentState initialState) : lastState(initialState) {
         palettes.push_back(NightPalette());        
         palettes.push_back(DawnPalette());
         palettes.push_back(DayPalette());
@@ -22,59 +23,61 @@ public:
         if (palettes.empty()) return ScenePalette();
 
         // Map timeOfDay [0,1) across the palette list circularly.
-        float t = environmentState.timeOfDay;
-        float scaled = t * static_cast<float>(palettes.size());
-        int idx = static_cast<int>(std::floor(scaled)) % static_cast<int>(palettes.size());
-        if (idx < 0) idx += static_cast<int>(palettes.size());
-        int next = (idx + 1) % static_cast<int>(palettes.size());
-        float localT = scaled - std::floor(scaled);
+        float timeOfDayNorm = std::clamp(environmentState.timeOfDay, 0.0f, 1.0f);
+        float scaledTime = timeOfDayNorm * static_cast<float>(palettes.size());
+        int currentIndex = static_cast<int>(std::floor(scaledTime)) % static_cast<int>(palettes.size());
+        // Ensure that the current palette index is between 0 and 3
+        if (currentIndex < 0) currentIndex += static_cast<int>(palettes.size());
+        int nextIndex = (currentIndex + 1) % static_cast<int>(palettes.size());
+        float localFactor = std::clamp(scaledTime - std::floor(scaledTime), 0.0f, 1.0f);
 
-        const ScenePalette &A = palettes[idx];
-        const ScenePalette &B = palettes[next];
-
-        auto lerpColor = [](const Color &a, const Color &b, float f) {
-            auto mix = [f](unsigned char x, unsigned char y) -> unsigned char {
-                int v = static_cast<int>(std::lround((1.0f - f) * x + f * y));
-                if (v < 0) v = 0; if (v > 255) v = 255; return static_cast<unsigned char>(v);
-            };
-            return Color{ mix(a.r, b.r), mix(a.g, b.g), mix(a.b, b.b), mix(a.a, b.a) };
-        };
-
-        auto lerpGradient = [&](const ColorGradient &g1, const ColorGradient &g2, float f) {
-            ColorGradient out;
-            out.colors[0] = lerpColor(g1.colors[0], g2.colors[0], f);
-            out.colors[1] = lerpColor(g1.colors[1], g2.colors[1], f);
-            return out;
-        };
-
-        auto lerpLayers = [&](const ColorLayers &l1, const ColorLayers &l2, float f) {
-            ColorLayers out;
-            for (size_t i = 0; i < out.layers.size(); ++i) {
-                out.layers[i] = lerpColor(l1.layers[i], l2.layers[i], f);
-            }
-            return out;
-        };
-
-        auto lerpRamp = [&](const ColorRamp &r1, const ColorRamp &r2, float f) {
-            ColorRamp out;
-            for (size_t i = 0; i < out.colors.size(); ++i) {
-                out.colors[i] = lerpColor(r1.colors[i], r2.colors[i], f);
-            }
-            return out;
-        };
+        const ScenePalette &A = palettes[currentIndex];
+        const ScenePalette &B = palettes[nextIndex];
 
         ScenePalette result;
-        result.mountainLayers = lerpLayers(A.mountainLayers, B.mountainLayers, localT);
-        result.skyGradient = lerpGradient(A.skyGradient, B.skyGradient, localT);
-        result.groundGradient = lerpGradient(A.groundGradient, B.groundGradient, localT);
-        result.forestCrownRamp = lerpRamp(A.forestCrownRamp, B.forestCrownRamp, localT);
-        result.forestTrunkRamp = lerpRamp(A.forestTrunkRamp, B.forestTrunkRamp, localT);
-        result.fogRamp = lerpRamp(A.fogRamp, B.fogRamp, localT);
-        result.rainRamp = lerpRamp(A.rainRamp, B.rainRamp, localT);
+        result.mountainLayers = lerpColorStruct<ColorLayers>(A.mountainLayers, B.mountainLayers, localFactor);
+        result.skyGradient = lerpColorStruct<ColorGradient>(A.skyGradient, B.skyGradient, localFactor);
+        result.groundGradient = lerpColorStruct<ColorGradient>(A.groundGradient, B.groundGradient, localFactor);
+        result.forestCrownRamp = lerpColorStruct<ColorRamp>(A.forestCrownRamp, B.forestCrownRamp, localFactor);
+        result.forestTrunkRamp = lerpColorStruct<ColorRamp>(A.forestTrunkRamp, B.forestTrunkRamp, localFactor);
+        result.fogRamp = lerpColorStruct<ColorRamp>(A.fogRamp, B.fogRamp, localFactor);
+        result.rainRamp = lerpColorStruct<ColorRamp>(A.rainRamp, B.rainRamp, localFactor);
 
         return result;
     }
 
+    bool needsRecompute(const EnvironmentState &newState, double currentTime, bool mouseButtonReleased) const {
+        // For now, we only have timeOfDay, so we can just check if it has changed significantly.
+        bool timeChanged = fabsf(newState.timeOfDay - lastState.timeOfDay) > epsilon;
+        bool cooledDown = (currentTime - lastPaletteUpdate) > paletteCooldown;
+        if (timeChanged && cooledDown) {
+            return true;
+        }
+        if (mouseButtonReleased && timeChanged) {
+            return true;
+        }
+        return false;
+    }
+
+
+    ScenePalette updatePaletteIfNeeded(const EnvironmentState &newState, double currentTime, bool mouseButtonReleased) {
+        if (needsRecompute(newState, currentTime, mouseButtonReleased)) {
+            lastState = newState;
+            lastPaletteUpdate = currentTime;
+            currentPalette = computeCurrentPalette(newState);
+        }
+        return currentPalette;
+    }
+
 private:
     std::vector<ScenePalette> palettes;
+    ScenePalette currentPalette;
+
+    const double paletteCooldown = 0.05f; // seconds
+    const float epsilon = 1e-4f;
+
+    double lastPaletteUpdate = 0.0f;
+    EnvironmentState lastState;
 };
+
+} // namespace liminal

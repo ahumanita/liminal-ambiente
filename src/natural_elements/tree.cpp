@@ -1,51 +1,9 @@
 #include "tree.hpp"
 
+namespace liminal {
+
 Tree::Tree(float x, float y, float scale, uint8_t crownColorIndex, uint8_t trunkColorIndex)
-    : NaturalElement<Tree>(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
-
-void Tree::draw(const ScenePalette &palette) const {
-    // Trunk
-    int trunkW = static_cast<int>(16 * scale);
-    int trunkH = static_cast<int>(40 * scale);
-    // Draw trunk with a brown color and and scale brightness based on the shadeFactor
-    Color trunkColor = getColorFromRamp(palette.forestTrunkRamp, trunkColorIndex);
-    DrawRectangle(
-        static_cast<int>(position.x - trunkW / 2),
-        static_cast<int>(position.y),
-        trunkW,
-        trunkH,
-        trunkColor
-    );
-
-    // Draw crown color with the specified foliage color and scale brightness based on a 
-    // the shadeFactor
-    Color crownColor = getColorFromRamp(palette.forestCrownRamp, colorPaletteIndex);
-    
-    int s1 = static_cast<int>(80 * scale);
-    int s2 = static_cast<int>(56 * scale);
-    int s3 = static_cast<int>(40 * scale);
-
-    Vector2 b1[3] = {
-        {position.x - s1 / 2.0f, position.y},
-        {position.x + s1 / 2.0f, position.y},
-        {position.x, position.y - 48.0f * scale}
-    };
-    DrawTriangle(b1[0], b1[1], b1[2], crownColor);
-
-    Vector2 b2[3] = {
-        {position.x - s2 / 2.0f, position.y - 28.0f * scale},
-        {position.x + s2 / 2.0f, position.y - 28.0f * scale},
-        {position.x, position.y - 80.0f * scale}
-    };
-    DrawTriangle(b2[0], b2[1], b2[2], crownColor);
-
-    Vector2 b3[3] = {
-        {position.x - s3 / 2.0f, position.y - 52.0f * scale},
-        {position.x + s3 / 2.0f, position.y - 52.0f * scale},
-        {position.x, position.y - 108.0f * scale}
-    };
-    DrawTriangle(b3[0], b3[1], b3[2], crownColor);
-}
+    : NaturalElement(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
 
 
 Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
@@ -73,8 +31,4 @@ Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
     });
 }
 
-void Forest::draw(const ScenePalette &palette) const {
-    for (const auto &tree : trees) {
-        tree.draw(palette);
-    }
-}
+} // namespace liminal

@@ -2,6 +2,8 @@
 #include "color_structs.hpp"
 #include <cstdint>
 
+namespace liminal {
+
 struct ScenePalette {
     ColorLayers mountainLayers;
     ColorGradient skyGradient;
@@ -12,6 +14,8 @@ struct ScenePalette {
     ColorRamp rainRamp;
 };
 
-inline Color getColorFromRamp(const ColorRamp &ramp, uint8_t index) {
+inline constexpr Color getColorFromRamp(const ColorRamp &ramp, uint8_t index) {
     return ramp.colors[index % ramp.colors.size()];
 }
+
+} // namespace liminal

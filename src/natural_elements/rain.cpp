@@ -2,18 +2,13 @@
 #include <raylib.h>
 #include <cstdlib>
 
+namespace liminal {
+
 RainDrop::RainDrop(float x, float y, float len, float speed, uint8_t colorIndex)
-    : NaturalElement<RainDrop>(x, y, colorIndex), len(len), speed(speed) {}
+    : NaturalElement(x, y, colorIndex), len(len), speed(speed) {}
 
 void RainDrop::update(float dt) {
     position.y += speed * dt;
-}
-
-void RainDrop::draw(const ScenePalette& palette) const {
-    Vector2 start = { position.x, position.y };
-    Vector2 end = { position.x, position.y + len };
-    Color dropColor = getColorFromRamp(palette.rainRamp, colorPaletteIndex);
-    DrawLineEx(start, end, 1.0f, dropColor);
 }
 
 void RainDrop::reset(int width) {
@@ -43,8 +38,4 @@ void RainSystem::update(float dt) {
     }
 }
 
-void RainSystem::draw(const ScenePalette& palette) const {
-    for (const auto &d : drops) {
-        d.draw(palette);
-    }
-}
+} // namespace liminal
