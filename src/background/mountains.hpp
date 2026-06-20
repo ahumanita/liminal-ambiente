@@ -4,7 +4,11 @@
 #include <vector>
 
 #include "color_palettes/scene_palette.hpp"
-#include "gui/window_properties.hpp"
+// only include window properties if not already defined
+#ifndef WINDOW_PROPERTIES_HPP_
+#define WINDOW_PROPERTIES_HPP_
+    #include "gui/window_properties.hpp"
+#endif
 
 namespace liminal {
 

@@ -1,11 +1,12 @@
 namespace liminal {
 
 struct WindowProperties {
-    int width;
-    int height;
+    const int width;
+    const int height;
     const char* title;
+    const int fontSize;
 
-    WindowProperties(int w, int h, const char* t) : width(w), height(h), title(t) {}
+    WindowProperties(const int w, const int h, const char* t, const int fs) : width(w), height(h), title(t), fontSize(fs) {}
 };
 
 } // namespace liminal

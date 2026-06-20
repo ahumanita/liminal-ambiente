@@ -16,6 +16,7 @@ add_executable(liminal-ambiente
 	src/background/sky.cpp
 	src/background/ground.cpp
 	src/background/mountains.cpp
+	src/gui/slider.cpp
 )
 
 # Ensure our `src` headers are visible to the target

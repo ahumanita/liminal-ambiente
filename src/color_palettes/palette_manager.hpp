@@ -10,7 +10,7 @@ namespace liminal {
 
 class PaletteManager {
 public:
-    PaletteManager() {
+    PaletteManager(EnvironmentState initialState) : lastState(initialState) {
         palettes.push_back(NightPalette());        
         palettes.push_back(DawnPalette());
         palettes.push_back(DayPalette());
@@ -46,8 +46,38 @@ public:
         return result;
     }
 
+    bool needsRecompute(const EnvironmentState &newState, double currentTime, bool mouseButtonReleased) const {
+        // For now, we only have timeOfDay, so we can just check if it has changed significantly.
+        bool timeChanged = fabsf(newState.timeOfDay - lastState.timeOfDay) > epsilon;
+        bool cooledDown = (currentTime - lastPaletteUpdate) > paletteCooldown;
+        if (timeChanged && cooledDown) {
+            return true;
+        }
+        if (mouseButtonReleased && timeChanged) {
+            return true;
+        }
+        return false;
+    }
+
+
+    ScenePalette updatePaletteIfNeeded(const EnvironmentState &newState, double currentTime, bool mouseButtonReleased) {
+        if (needsRecompute(newState, currentTime, mouseButtonReleased)) {
+            lastState = newState;
+            lastPaletteUpdate = currentTime;
+            currentPalette = computeCurrentPalette(newState);
+        }
+        return currentPalette;
+    }
+
 private:
     std::vector<ScenePalette> palettes;
+    ScenePalette currentPalette;
+
+    const double paletteCooldown = 0.05f; // seconds
+    const float epsilon = 1e-4f;
+
+    double lastPaletteUpdate = 0.0f;
+    EnvironmentState lastState;
 };
 
 } // namespace liminal
