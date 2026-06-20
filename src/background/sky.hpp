@@ -8,7 +8,8 @@ namespace liminal {
 class Sky {
 public:
     Sky(float start_height) noexcept;
-    void draw(const ScenePalette &palette) const noexcept;
+
+    float getStartHeight() const {return start_height;}
 
 private:
     float start_height;

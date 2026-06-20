@@ -8,7 +8,8 @@ namespace liminal {
 class Ground {
 public:
     Ground(float height) noexcept;
-    void draw(const ScenePalette &palette) const noexcept;
+    
+    float getHeight() const {return height;}
 
 private:
     float height;

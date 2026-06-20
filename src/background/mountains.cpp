@@ -55,38 +55,4 @@ Mountains::Mountains(const WindowProperties& props, const ScenePalette& palette)
 
 Mountains::~Mountains() {}
 
-void Mountains::draw(const ScenePalette& palette) const noexcept {
-    // Draw layers from back to front, note that layerIndex starts at layers.size()-1
-    for (size_t layerIndex = layers.size(); layerIndex-- > 0 ;) {
-        // Use corresponding color from palette for each layer
-        Color color = palette.mountainLayers.colors[layerIndex];
-        for (std::size_t segmentIdx = 0; segmentIdx < layers[layerIndex].ridgeLine.size() - 1; ++segmentIdx)
-        {
-            // Get the top vertices of the current mountain segment
-            const Vector2& leftTop  = layers[layerIndex].ridgeLine[segmentIdx];
-            const Vector2& rightTop = layers[layerIndex].ridgeLine[segmentIdx + 1];
-            // Define corresponding bottom vertices at the bottom of the screen
-            Vector2 leftBottom{
-                leftTop.x,
-                static_cast<float>(windowProps.height)
-            };
-            Vector2 rightBottom{
-                rightTop.x,
-                static_cast<float>(windowProps.height)
-            };
-            // Draw the mountain segment as two triangles
-            DrawTriangle(
-                leftTop,
-                leftBottom,
-                rightTop,
-                color);
-            DrawTriangle(
-                rightTop,
-                leftBottom,
-                rightBottom,
-                color);
-        }
-    }
-}
-
 } // namespace liminal

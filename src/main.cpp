@@ -9,6 +9,7 @@
 #include "background/mountains.hpp"
 #include "color_palettes/palette_manager.hpp"
 #include "gui/slider.hpp"
+#include "renderer/renderer.hpp"
 
 using namespace liminal;
 
@@ -27,7 +28,7 @@ int main() {
 
     PaletteManager paletteManager(env);
     ScenePalette palette = paletteManager.computeCurrentPalette(env);
-    
+
     // Create scene elements
     RainSystem rain(300, screenWidth, screenHeight);
     Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
@@ -38,8 +39,13 @@ int main() {
     Ground ground(120.0f);
     Mountains mountains(windowProps, palette);
 
+    Scene scene(mountains, sky, ground);
+
     // GUI elements
     Slider timeOfDaySlider(20, screenHeight - 40, 300, 8, env.timeOfDay, "Time of Day");
+
+    // Initialize renderer
+    Renderer renderer = Renderer(windowProps);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -48,10 +54,8 @@ int main() {
         fog2.update(dt);
 
         BeginDrawing();
-        // Background
-        sky.draw(palette);
-        mountains.draw(palette);
-        ground.draw(palette);
+   
+        renderer.render(scene, palette);
 
         // Natural elements
         // Draw a stylized tree at bottom center

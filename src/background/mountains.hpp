@@ -23,7 +23,7 @@ public:
     Mountains(const WindowProperties& props, const ScenePalette& palette);
     ~Mountains();
 
-    void draw(const ScenePalette& palette) const noexcept;
+    std::vector<MountainLayer> getLayers() const { return layers; }
 
 private:
     const WindowProperties& windowProps; // To access screen dimensions for drawing
