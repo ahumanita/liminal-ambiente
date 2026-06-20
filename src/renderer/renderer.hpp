@@ -8,14 +8,14 @@
 namespace liminal {
 
 struct Scene {
-    Mountains mountains;
-    Sky sky;
-    Ground ground;
-    RainSystem rain;
-    Forest forest;
-    Fog fog;
+    const Mountains& mountains;
+    const Sky& sky;
+    const Ground& ground;
+    const RainSystem& rain;
+    const Forest& forest;
+    const Fog& fog;
 
-    Scene(const Mountains m, const Sky s, const Ground g, const RainSystem r, const Forest f, const Fog fog) : mountains(m), sky(s), ground(g), rain(r), forest(f), fog(fog) {}
+    Scene(const Mountains& m, const Sky& s, const Ground& g, const RainSystem& r, const Forest& f, const Fog& fog) : mountains(m), sky(s), ground(g), rain(r), forest(f), fog(fog) {}
 };
 
 class Renderer {
