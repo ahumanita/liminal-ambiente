@@ -15,6 +15,7 @@ public:
         palettes.push_back(DawnPalette());
         palettes.push_back(DayPalette());
         palettes.push_back(DuskPalette());
+        currentPalette = computeCurrentPalette(initialState);
     }
 
     // Compute an interpolated ScenePalette for the given environment state.

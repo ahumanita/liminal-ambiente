@@ -22,6 +22,8 @@ class RainSystem {
 public:
     RainSystem(int count, int screenW, int screenH);
     void update(float dt);
+    void setIntensity(float newIntensity);
+    float getIntensity() const { return intensity; }
 
     std::vector<RainDrop> getRainDrops() const {return drops;}
 
@@ -29,6 +31,7 @@ private:
     std::vector<RainDrop> drops;
     int width;
     int height;
+    float intensity = 1.0f;
 };
 
 } // namespace liminal
