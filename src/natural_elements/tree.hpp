@@ -21,7 +21,7 @@ private:
 class Forest {
 public:
     Forest(int lowerX, int upperX, int lowerY, int upperY, float density);
-    std::vector<Tree> getTrees() const {return trees;}
+    const std::vector<Tree>& getTrees() const {return trees;}
 
 private:    
     std::vector<Tree> trees;

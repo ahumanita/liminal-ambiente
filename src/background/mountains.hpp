@@ -4,11 +4,7 @@
 #include <vector>
 
 #include "color_palettes/scene_palette.hpp"
-// only include window properties if not already defined
-#ifndef WINDOW_PROPERTIES_HPP_
-#define WINDOW_PROPERTIES_HPP_
-    #include "gui/window_properties.hpp"
-#endif
+#include "gui/window_properties.hpp"
 
 namespace liminal {
 
@@ -23,7 +19,7 @@ public:
     Mountains(const WindowProperties& props, const ScenePalette& palette);
     ~Mountains();
 
-    std::vector<MountainLayer> getLayers() const { return layers; }
+    const std::vector<MountainLayer>& getLayers() const { return layers; }
 
 private:
     const WindowProperties& windowProps; // To access screen dimensions for drawing

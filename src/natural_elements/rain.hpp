@@ -25,7 +25,7 @@ public:
     void setIntensity(float newIntensity);
     float getIntensity() const { return intensity; }
 
-    std::vector<RainDrop> getRainDrops() const {return drops;}
+    const std::vector<RainDrop>& getRainDrops() const {return drops;}
 
 private:
     std::vector<RainDrop> drops;
