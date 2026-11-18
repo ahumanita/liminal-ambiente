@@ -8,7 +8,6 @@
 #include "background/ground.hpp"
 #include "background/mountains.hpp"
 #include "color_palettes/palette_manager.hpp"
-#include "gui/slider.hpp"
 #ifdef LIMINAL_DEBUG
 #include "gui/debug/debug_panel.hpp"
 #endif
@@ -30,8 +29,6 @@ int main() {
     InitWindow(screenWidth, screenHeight, "Liminal Ambiente");
     SetTargetFPS(60);
 
-    const char *msg = "Hello World";
-    
     EnvironmentState env{};
     env.timeOfDay = 0.5f;
     float rainIntensity = 1.0f;
@@ -89,10 +86,6 @@ int main() {
 #ifdef LIMINAL_DEBUG
         EndScissorMode();
 #endif
-
-        // UI text on top
-        int textWidth = MeasureText(msg, fontSize);
-        DrawText(msg, (sceneWidth - textWidth) / 2, 20, fontSize, WHITE);
 
 #ifdef LIMINAL_DEBUG
         debugPanel.draw();
