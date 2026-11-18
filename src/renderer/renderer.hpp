@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "natural_elements/rain.hpp"
 #include "natural_elements/tree.hpp"
 #include "natural_elements/fog.hpp"
@@ -161,6 +163,7 @@ void Renderer::drawFog(const Fog& fog, const ScenePalette& palette) const noexce
     const auto height = fog.getHeight();
 
     Color color = getColorFromRamp(palette.fogRamp, colorPaletteIndex);
+    color.a = static_cast<unsigned char>(std::clamp(fog.getAlpha() * 255.0f, 0.0f, 255.0f));
     DrawRectangle(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(width), static_cast<int>(height), color);
 }
 

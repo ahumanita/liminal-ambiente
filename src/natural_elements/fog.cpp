@@ -1,4 +1,5 @@
 #include "fog.hpp"
+#include <algorithm>
 #include <raylib.h>
 #include <cstdlib>
 
@@ -14,6 +15,14 @@ void Fog::update(float dt) {
 void Fog::reset(int width) {
     position.x = static_cast<float>(GetRandomValue(0, width));
     position.y = static_cast<float>(GetRandomValue(0, height));
+}
+
+void Fog::setSpeed(float newSpeed) {
+    speed = newSpeed;
+}
+
+void Fog::setAlpha(float newAlpha) {
+    alpha = std::clamp(newAlpha, 0.0f, 1.0f);
 }
 
 } // namespace liminal

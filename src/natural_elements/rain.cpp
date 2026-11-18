@@ -1,4 +1,5 @@
 #include "rain.hpp"
+#include <algorithm>
 #include <raylib.h>
 #include <cstdlib>
 
@@ -29,9 +30,14 @@ RainSystem::RainSystem(int count, int screenW, int screenH)
     }
 }
 
+void RainSystem::setIntensity(float newIntensity) {
+    intensity = std::clamp(newIntensity, 0.0f, 3.0f);
+}
+
 void RainSystem::update(float dt) {
+    const float adjustedDt = dt * intensity;
     for (auto &d : drops) {
-        d.update(dt);
+        d.update(adjustedDt);
         if (d.getPosition().y > height) {
             d.reset(width);
         }

@@ -13,6 +13,11 @@ public:
 
     float getWidth() const {return width;}
     float getHeight() const {return height;}
+    float getSpeed() const {return speed;}
+    float getAlpha() const {return alpha;}
+
+    void setSpeed(float newSpeed);
+    void setAlpha(float newAlpha);
 
 private:
     float speed;

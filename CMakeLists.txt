@@ -17,10 +17,15 @@ add_executable(liminal-ambiente
 	src/background/ground.cpp
 	src/background/mountains.cpp
 	src/gui/slider.cpp
+	src/gui/debug/debug_panel.cpp
 )
 
 # Ensure our `src` headers are visible to the target
 target_include_directories(liminal-ambiente PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+target_compile_definitions(liminal-ambiente PRIVATE
+	$<$<CONFIG:Debug>:LIMINAL_DEBUG>
+)
 
 # Link the raylib target to the executable
 target_link_libraries(liminal-ambiente PRIVATE raylib)
