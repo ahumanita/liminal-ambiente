@@ -21,6 +21,8 @@ DebugPanel::DebugPanel(float x, float y, float width, float height)
 
 void DebugPanel::addFloatParameter(const std::string& category, const std::string& label, float& value, float minValue, float maxValue) {
     int categoryIndex = -1;
+
+    // Check if the category already exists
     for (size_t i = 0; i < categories.size(); ++i) {
         if (categories[i] == category) {
             categoryIndex = static_cast<int>(i);
@@ -28,12 +30,14 @@ void DebugPanel::addFloatParameter(const std::string& category, const std::strin
         }
     }
 
+    // If the category doesn't exist, create a new one
     if (categoryIndex == -1) {
         categories.push_back(category);
         parametersByCategory.emplace_back();
         categoryIndex = static_cast<int>(categories.size() - 1);
     }
 
+    // Add the new parameter to the appropriate category
     DebugParameter parameter;
     parameter.label = label;
     parameter.targetValue = &value;
@@ -49,6 +53,7 @@ void DebugPanel::refreshLayout() {
     const float categoryAreaWidth = width - 2.0f * kPadding;
     const float tabWidth = categoryAreaWidth / static_cast<float>(std::max<size_t>(1, categories.size()));
 
+    // For each category, calculate the rectangle for each parameter based on its index and the panel's position and size
     for (size_t categoryIndex = 0; categoryIndex < categories.size(); ++categoryIndex) {
         std::vector<DebugParameter>& parameters = parametersByCategory[categoryIndex];
         for (size_t parameterIndex = 0; parameterIndex < parameters.size(); ++parameterIndex) {
@@ -129,6 +134,7 @@ void DebugPanel::draw() const {
     const float tabWidth = (width - 2.0f * kPadding) / static_cast<float>(std::max<size_t>(1, categories.size()));
     const float tabStartX = x + kPadding;
 
+    // Create a tab for each category at the top of the panel
     for (size_t tabIndex = 0; tabIndex < categories.size(); ++tabIndex) {
         const Rectangle tabBounds = {
             tabStartX + static_cast<float>(tabIndex) * tabWidth,
@@ -143,8 +149,10 @@ void DebugPanel::draw() const {
         DrawText(categories[tabIndex].c_str(), static_cast<int>(tabBounds.x + 10.0f), static_cast<int>(tabBounds.y + 7.0f), 12, WHITE);
     }
 
+    // Draw the parameters for the active category
     const std::vector<DebugParameter>& activeParameters = parametersByCategory[static_cast<size_t>(activeCategory)];
     for (size_t parameterIndex = 0; parameterIndex < activeParameters.size(); ++parameterIndex) {
+        // Draw the label and value for each parameter
         const DebugParameter& parameter = activeParameters[parameterIndex];
         const float labelY = y + kTabHeight + 16.0f + static_cast<float>(parameterIndex) * kRowHeight;
         const float value = parameter.previewValue;
@@ -152,6 +160,7 @@ void DebugPanel::draw() const {
         DrawText(parameter.label.c_str(), static_cast<int>(x + 18.0f), static_cast<int>(labelY), 12, WHITE);
         DrawText(TextFormat("%.3f", value), static_cast<int>(x + width - 60.0f), static_cast<int>(labelY), 12, WHITE);
 
+        // Draw the slider track and knob for each parameter
         DrawRectangleRec(parameter.trackRect, DARKGRAY);
         const float normalized = (value - parameter.minValue) / std::max(parameter.maxValue - parameter.minValue, 0.0001f);
         const float knobX = parameter.trackRect.x + normalized * parameter.trackRect.width;
