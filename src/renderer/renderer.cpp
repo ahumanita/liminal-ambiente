@@ -8,8 +8,7 @@ void Renderer::drawMountains(const Mountains& m, const ScenePalette& palette) co
     const auto& layers = m.getLayers();
     // Draw layers from back to front, note that layerIndex starts at layers.size()-1
     for (size_t layerIndex = layers.size(); layerIndex-- > 0 ;) {
-        // Use corresponding color from palette for each layer
-        Color color = palette.mountainLayers.colors[layerIndex];
+        Color color = lerpColor(palette.mountainBounds.colors[0], palette.mountainBounds.colors[1], layers[layerIndex].depth); // Assign color from palette
         for (std::size_t segmentIdx = 0; segmentIdx < layers[layerIndex].ridgeLine.size() - 1; ++segmentIdx)
         {
             // Get the top vertices of the current mountain segment

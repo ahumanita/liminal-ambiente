@@ -45,7 +45,7 @@ int main() {
     // Create background
     Sky sky(0);
     Ground ground(120.0f);
-    Mountains mountains(windowProps, palette);
+    Mountains mountains(windowProps);
 
     Scene scene(mountains, sky, ground, rain, forest, fog);
 

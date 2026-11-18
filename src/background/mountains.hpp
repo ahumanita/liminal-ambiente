@@ -5,27 +5,27 @@
 
 #include "color_palettes/scene_palette.hpp"
 #include "gui/window_properties.hpp"
+#include "mountain_config.hpp"
 
 namespace liminal {
 
 struct MountainLayer {
-    float baseElevation;
+    float depth; // Depth of the layer, used for parallax effect
+    float elevation; // Screen y-coordinate of the base of the mountain layer
     float amplitude;
     std::vector<Vector2> ridgeLine;
 };
 
 class Mountains {
 public:
-    Mountains(const WindowProperties& props, const ScenePalette& palette);
+    Mountains(const WindowProperties& props, const MountainConfig& mountainConfig = MountainConfig());
     ~Mountains();
 
     const std::vector<MountainLayer>& getLayers() const { return layers; }
 
 private:
     const WindowProperties& windowProps; // To access screen dimensions for drawing
-    int numRidgePoints = 8; // Number of control points for the ridge line
-    int numRefinements = 3; // Number of times to refine the ridge line for smoother mountains
-    int numLayers;          // Number of mountain layers (based on palette)
+    MountainConfig config;  // Configuration for mountain generation
     std::vector<MountainLayer> layers; // Store properties for each mountain layer
 };
 
