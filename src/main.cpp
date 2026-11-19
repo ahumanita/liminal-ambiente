@@ -10,6 +10,7 @@
 #include "color_palettes/palette_manager.hpp"
 #include "gui/window_properties.hpp"
 #include "scene/scene_size.hpp"
+#include "scene/scene_config.hpp"
 #ifdef LIMINAL_DEBUG
 #include "gui/debug/debug_panel.hpp"
 #endif
@@ -39,14 +40,17 @@ int main() {
     PaletteManager paletteManager(env);
     ScenePalette palette = paletteManager.computeCurrentPalette(env);
 
+    // Scene configuration: how every element is generated (defaults in the element configs)
+    const SceneConfig sceneConfig{};
+
     // Create scene elements
-    RainSystem rain(sceneWidth, sceneHeight);
-    Forest forest;
-    Fog fog;
+    RainSystem rain(sceneWidth, sceneHeight, sceneConfig.rain);
+    Forest forest(sceneConfig.forest);
+    Fog fog(sceneConfig.fog);
     // Create background
-    Sky sky;
-    Ground ground;
-    Mountains mountains(sceneSize);
+    Sky sky(sceneConfig.sky);
+    Ground ground(sceneConfig.ground);
+    Mountains mountains(sceneSize, sceneConfig.mountains);
 
     Scene scene(mountains, sky, ground, rain, forest, fog);
 
