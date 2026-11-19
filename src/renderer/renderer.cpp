@@ -39,9 +39,9 @@ void Renderer::drawMountains(const Mountains& m, const ScenePalette& palette) co
 }
 
 void Renderer::drawSky(const Sky& s, const ScenePalette& palette) const noexcept {
-    const auto start_height = s.getStartHeight();
+    const auto startHeight = s.getStartHeight();
     // Create a rectangle with a color gradient that is in the background
-    for (int y = start_height; y < GetScreenHeight(); ++y) {
+    for (int y = startHeight; y < GetScreenHeight(); ++y) {
         float t = static_cast<float>(y) / GetScreenHeight();
         Color blendedColor = lerpColor(palette.skyGradient.colors[0], palette.skyGradient.colors[1], t);
         DrawLine(0, y, GetScreenWidth(), y, blendedColor);

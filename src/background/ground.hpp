@@ -2,17 +2,18 @@
 #include <vector>
 #include <raylib.h>
 #include "color_palettes/scene_palette.hpp"
+#include "ground_config.hpp"
 
 namespace liminal {
 
 class Ground {
 public:
-    Ground(float height) noexcept;
+    Ground(const GroundConfig& config = GroundConfig()) noexcept;
     
-    float getHeight() const {return height;}
+    float getHeight() const {return config.height;}
 
 private:
-    float height;
+    GroundConfig config;
 };
 
 } // namespace liminal

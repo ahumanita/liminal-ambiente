@@ -2,28 +2,25 @@
 #include <vector>
 #include <raylib.h>
 #include "natural_element.hpp"
+#include "fog_config.hpp"
 
 namespace liminal {
 
 class Fog : public NaturalElement {
 public:
-    Fog(float x, float y, float speed, float alpha, float width, float height);
+    Fog(const FogConfig& fogConfig = FogConfig());
     void update(float dt) override;
-    void reset(int width);
 
-    float getWidth() const {return width;}
-    float getHeight() const {return height;}
-    float getSpeed() const {return speed;}
-    float getAlpha() const {return alpha;}
+    float getWidth() const {return config.width;}
+    float getHeight() const {return config.height;}
+    float getSpeed() const {return config.speed;}
+    float getAlpha() const {return config.density;}
 
     void setSpeed(float newSpeed);
     void setAlpha(float newAlpha);
 
 private:
-    float speed;
-    float alpha;
-    float height;
-    float width;
+    FogConfig config;
 };
 
 } // namespace liminal

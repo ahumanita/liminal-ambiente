@@ -1,4 +1,5 @@
 #include "tree.hpp"
+#include "procedural/random.hpp"
 
 namespace liminal {
 
@@ -6,21 +7,24 @@ Tree::Tree(float x, float y, float scale, uint8_t crownColorIndex, uint8_t trunk
     : NaturalElement(x, y, crownColorIndex), scale(scale), trunkColorIndex(trunkColorIndex) {}
 
 
-Forest::Forest(int lowerX, int upperX, int lowerY, int upperY, float density)
-    : lowerX(lowerX), upperX(upperX), lowerY(lowerY), upperY(upperY), density(density) {
-    // Derive number of trees to place randomly based on density, area size and average tree width
-    int area = (upperX - lowerX) * (upperY - lowerY);
-    int treeCount = static_cast<int>(area * density / 2); // Assuming average tree occupies 80x80 area
+Forest::Forest(const ForestConfig& forestConfig)
+    : config(forestConfig) {
+    // Derive number of trees to place randomly based on density and area size
+    const float area = (config.maxX - config.minX) * (config.maxY - config.minY);
+    const int treeCount = static_cast<int>(area * config.density / 2);
     trees.reserve(treeCount);
+
+    // One seeded generator for the whole forest: the same config always gives the same forest
+    Rng rng(config.seed);
 
     // Initialize trees within the specified area
     for (int i = 0; i < treeCount; ++i) {
-        float x = static_cast<float>(GetRandomValue(lowerX, upperX));
-        float y = static_cast<float>(GetRandomValue(lowerY, upperY));
-        float scale = static_cast<float>(GetRandomValue(5, 15)) / 10.0f; // Random scale between 0.5 and 1.5
-        // Randomly select a crown color index for the tree from the palette
-        uint8_t crownColorIndex = static_cast<uint8_t>(GetRandomValue(0, 7));
-        uint8_t trunkColorIndex = static_cast<uint8_t>(GetRandomValue(0, 7));
+        float x = randomFloat(rng, config.minX, config.maxX);
+        float y = randomFloat(rng, config.minY, config.maxY);
+        float scale = randomFloat(rng, config.minScale, config.maxScale);
+        // Randomly select crown and trunk color indices for the tree from the palette
+        uint8_t crownColorIndex = static_cast<uint8_t>(randomInt(rng, config.minColorIndex, config.maxColorIndex));
+        uint8_t trunkColorIndex = static_cast<uint8_t>(randomInt(rng, config.minColorIndex, config.maxColorIndex));
 
         trees.emplace_back(x, y, scale, crownColorIndex, trunkColorIndex);
     }

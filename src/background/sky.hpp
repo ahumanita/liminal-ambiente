@@ -2,17 +2,18 @@
 #include <vector>
 #include <raylib.h>
 #include "color_palettes/scene_palette.hpp"
+#include "sky_config.hpp"
 
 namespace liminal {
 
 class Sky {
 public:
-    Sky(float start_height) noexcept;
+    Sky(const SkyConfig& config = SkyConfig()) noexcept;
 
-    float getStartHeight() const {return start_height;}
+    float getStartHeight() const {return config.startHeight;}
 
 private:
-    float start_height;
+    SkyConfig config;
 };
 
 } // namespace liminal

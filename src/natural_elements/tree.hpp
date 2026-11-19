@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "natural_element.hpp"
+#include "forest_config.hpp"
 
 namespace liminal {
 
@@ -20,16 +21,12 @@ private:
 
 class Forest {
 public:
-    Forest(int lowerX, int upperX, int lowerY, int upperY, float density);
+    Forest(const ForestConfig& forestConfig = ForestConfig());
     const std::vector<Tree>& getTrees() const {return trees;}
 
-private:    
+private:
+    ForestConfig config;
     std::vector<Tree> trees;
-    int lowerX;
-    int upperX;
-    int lowerY;
-    int upperY;
-    float density;   
 };
 
 } // namespace liminal

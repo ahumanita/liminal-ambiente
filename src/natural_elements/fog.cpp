@@ -1,28 +1,34 @@
 #include "fog.hpp"
+#include "procedural/random.hpp"
+#include "color_palettes/color_structs.hpp"
+
 #include <algorithm>
-#include <raylib.h>
-#include <cstdlib>
 
 namespace liminal {
 
-Fog::Fog(float x, float y, float speed, float alpha, float width, float height)
-    : NaturalElement(x, y, static_cast<uint8_t>(GetRandomValue(0,7))), speed(speed), alpha(alpha), width(width), height(height) {}
+namespace {
 
-void Fog::update(float dt) {
-    position.x = position.x + speed * dt;
+// Pick the fog bank's color index from its seed, so the same config always gives the same fog
+uint8_t randomFogColorIndex(std::uint32_t seed) {
+    Rng rng(seed);
+    return static_cast<uint8_t>(randomInt(rng, 0, static_cast<int>(kColorRampSize) - 1));
 }
 
-void Fog::reset(int width) {
-    position.x = static_cast<float>(GetRandomValue(0, width));
-    position.y = static_cast<float>(GetRandomValue(0, height));
+} // namespace
+
+Fog::Fog(const FogConfig& fogConfig)
+    : NaturalElement(fogConfig.x, fogConfig.y, randomFogColorIndex(fogConfig.seed)), config(fogConfig) {}
+
+void Fog::update(float dt) {
+    position.x = position.x + config.speed * dt;
 }
 
 void Fog::setSpeed(float newSpeed) {
-    speed = newSpeed;
+    config.speed = newSpeed;
 }
 
 void Fog::setAlpha(float newAlpha) {
-    alpha = std::clamp(newAlpha, 0.0f, 1.0f);
+    config.density = std::clamp(newAlpha, 0.0f, 1.0f);
 }
 
 } // namespace liminal

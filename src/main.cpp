@@ -39,12 +39,12 @@ int main() {
     ScenePalette palette = paletteManager.computeCurrentPalette(env);
 
     // Create scene elements
-    RainSystem rain(300, screenWidth, screenHeight);
-    Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
-    Fog fog(0, 0.25f * screenHeight, fogSpeed, fogDensity, 0.5f * screenWidth, 0.75f * screenHeight);
+    RainSystem rain(sceneWidth, sceneHeight);
+    Forest forest;
+    Fog fog;
     // Create background
-    Sky sky(0);
-    Ground ground(120.0f);
+    Sky sky;
+    Ground ground;
     Mountains mountains(windowProps);
 
     Scene scene(mountains, sky, ground, rain, forest, fog);

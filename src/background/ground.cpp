@@ -4,7 +4,7 @@
 
 namespace liminal {
 
-Ground::Ground(float height) noexcept
-    : height(height) {}
+Ground::Ground(const GroundConfig& config) noexcept
+    : config(config) {}
 
 } // namespace liminal

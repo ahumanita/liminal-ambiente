@@ -30,4 +30,17 @@ inline float randomFloat(Rng& rng, float min, float max) noexcept {
     return min + (max - min) * unit;
 }
 
+/**
+ * Uniformly distributed integer in [min, max] (both inclusive), e.g. a palette index.
+ * Uses the modulo of the 32-bit output; its bias is negligible for small ranges.
+ *
+ * @param rng The generator; passed by reference so that its state advances
+ * @param min Lower bound (inclusive), must be <= max
+ * @param max Upper bound (inclusive)
+ */
+inline int randomInt(Rng& rng, int min, int max) noexcept {
+    const auto range = static_cast<std::uint32_t>(max - min) + 1u;
+    return min + static_cast<int>(rng() % range);
+}
+
 } // namespace liminal
