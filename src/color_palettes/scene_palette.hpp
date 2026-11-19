@@ -5,7 +5,7 @@
 namespace liminal {
 
 struct ScenePalette {
-    ColorLayers mountainLayers;
+    ColorBounds mountainBounds;
     ColorGradient skyGradient;
     ColorGradient groundGradient;
     ColorRamp forestCrownRamp;

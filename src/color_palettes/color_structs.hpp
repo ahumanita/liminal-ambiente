@@ -10,12 +10,16 @@ struct ColorGradient {
     std::array<Color, 2> colors;
 };
 
-struct ColorLayers {
-    std::array<Color, 3> colors;
+struct ColorBounds {
+    std::array<Color, 2> colors;
 };
 
+// Number of colors in a ColorRamp (deep shadow ... fog-tinted). Single source of truth
+// for the ramp size: configs derive their valid color index range from it.
+inline constexpr std::size_t kColorRampSize = 8;
+
 struct ColorRamp {
-    std::array<Color, 8> colors;
+    std::array<Color, kColorRampSize> colors;
 };
 
 /**

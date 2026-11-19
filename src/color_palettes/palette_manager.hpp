@@ -4,7 +4,7 @@
 #include "color_palettes/palettes/night.hpp"
 #include "color_palettes/palettes/dawn.hpp"
 #include "color_palettes/palettes/day.hpp"
-#include "color_palettes/environment_state.hpp"
+#include "environment/environment_state.hpp"
 
 namespace liminal {
 
@@ -36,7 +36,7 @@ public:
         const ScenePalette &B = palettes[nextIndex];
 
         ScenePalette result;
-        result.mountainLayers = lerpColorStruct<ColorLayers>(A.mountainLayers, B.mountainLayers, localFactor);
+        result.mountainBounds = lerpColorStruct<ColorBounds>(A.mountainBounds, B.mountainBounds, localFactor);
         result.skyGradient = lerpColorStruct<ColorGradient>(A.skyGradient, B.skyGradient, localFactor);
         result.groundGradient = lerpColorStruct<ColorGradient>(A.groundGradient, B.groundGradient, localFactor);
         result.forestCrownRamp = lerpColorStruct<ColorRamp>(A.forestCrownRamp, B.forestCrownRamp, localFactor);

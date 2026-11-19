@@ -4,7 +4,7 @@
 
 namespace liminal {
 
-Sky::Sky(float start_height) noexcept
-    : start_height(start_height) {}
+Sky::Sky(const SkyConfig& config) noexcept
+    : config(config) {}
 
 } // namespace liminal

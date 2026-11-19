@@ -6,9 +6,8 @@ namespace liminal {
 class DuskPalette : public ScenePalette {
 public:
     DuskPalette() {
-        mountainLayers.colors = {
+        mountainBounds.colors = {
             Color{45, 50, 55, 255},   // Near dusk gray
-            Color{70, 80, 100, 255},  // Mid twilight blue-gray
             Color{95, 110, 135, 255}  // Far cool blue haze
         };
         skyGradient.colors = {

@@ -8,6 +8,9 @@
 #include "background/ground.hpp"
 #include "background/mountains.hpp"
 #include "color_palettes/palette_manager.hpp"
+#include "gui/window_properties.hpp"
+#include "scene/scene_size.hpp"
+#include "scene/scene_config.hpp"
 #ifdef LIMINAL_DEBUG
 #include "gui/debug/debug_panel.hpp"
 #endif
@@ -25,40 +28,42 @@ int main() {
 #ifdef LIMINAL_DEBUG
     screenWidth += debugPanelWidth;
 #endif
+    // The window can be wider than the scene (debug panel); everything in the scene uses sceneSize
     WindowProperties windowProps(screenWidth, screenHeight, "Liminal Ambiente", fontSize);
-    InitWindow(screenWidth, screenHeight, "Liminal Ambiente");
+    const SceneSize sceneSize{static_cast<float>(sceneWidth), static_cast<float>(sceneHeight)};
+    InitWindow(windowProps.width, windowProps.height, windowProps.title);
     SetTargetFPS(60);
 
+    // World state: time of day and weather (defaults in EnvironmentState)
     EnvironmentState env{};
-    env.timeOfDay = 0.5f;
-    float rainIntensity = 1.0f;
-    float fogDensity = 0.5f;
-    float fogSpeed = 2.0f;
 
     PaletteManager paletteManager(env);
     ScenePalette palette = paletteManager.computeCurrentPalette(env);
 
+    // Scene configuration: how every element is generated (defaults in the element configs)
+    const SceneConfig sceneConfig{};
+
     // Create scene elements
-    RainSystem rain(300, screenWidth, screenHeight);
-    Forest forest(50, screenWidth - 50, screenHeight - 140, screenHeight - 20, 0.0005f);
-    Fog fog(0, 0.25f * screenHeight, fogSpeed, fogDensity, 0.5f * screenWidth, 0.75f * screenHeight);
+    RainSystem rain(sceneWidth, sceneHeight, sceneConfig.rain);
+    Forest forest(sceneConfig.forest);
+    Fog fog(sceneConfig.fog);
     // Create background
-    Sky sky(0);
-    Ground ground(120.0f);
-    Mountains mountains(windowProps, palette);
+    Sky sky(sceneConfig.sky);
+    Ground ground(sceneConfig.ground);
+    Mountains mountains(sceneSize, sceneConfig.mountains);
 
     Scene scene(mountains, sky, ground, rain, forest, fog);
 
 #ifdef LIMINAL_DEBUG
     DebugPanel debugPanel(static_cast<float>(sceneWidth + 18.0f), 24.0f, 300.0f, 260.0f);
     debugPanel.addFloatParameter("Environment", "Time of Day", env.timeOfDay, 0.0f, 1.0f);
-    debugPanel.addFloatParameter("Weather", "Rain Intensity", rainIntensity, 0.0f, 3.0f);
-    debugPanel.addFloatParameter("Weather", "Fog Density", fogDensity, 0.0f, 1.0f);
-    debugPanel.addFloatParameter("Scene", "Fog Drift", fogSpeed, 0.0f, 8.0f);
+    debugPanel.addFloatParameter("Weather", "Rain Intensity", env.rainIntensity, 0.0f, 1.0f);
+    debugPanel.addFloatParameter("Weather", "Fog Density", env.fogDensity, 0.0f, 1.0f);
+    debugPanel.addFloatParameter("Weather", "Wind Speed", env.windSpeed, 0.0f, 8.0f);
 #endif
 
     // Initialize renderer
-    Renderer renderer = Renderer(windowProps);
+    Renderer renderer = Renderer(sceneSize);
 
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -68,13 +73,10 @@ int main() {
         if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             debugPanel.commitPendingChanges();
         }
-        rain.setIntensity(rainIntensity);
-        fog.setAlpha(fogDensity);
-        fog.setSpeed(fogSpeed);
 #endif
 
-        rain.update(dt);
-        fog.update(dt);
+        rain.update(dt, env);
+        fog.update(dt, env);
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -82,7 +84,7 @@ int main() {
 #ifdef LIMINAL_DEBUG
         BeginScissorMode(0, 0, sceneWidth, screenHeight);
 #endif
-        renderer.render(scene, palette);
+        renderer.render(scene, palette, env);
 #ifdef LIMINAL_DEBUG
         EndScissorMode();
 #endif
