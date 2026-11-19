@@ -4,7 +4,7 @@
 #include "color_palettes/palettes/night.hpp"
 #include "color_palettes/palettes/dawn.hpp"
 #include "color_palettes/palettes/day.hpp"
-#include "color_palettes/environment_state.hpp"
+#include "environment/environment_state.hpp"
 
 namespace liminal {
 

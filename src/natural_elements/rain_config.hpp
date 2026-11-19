@@ -13,8 +13,7 @@ struct RainConfig {
     float maxSpeed = 700.0f; // Maximum speed of a raindrop
     std::uint8_t minColorIndex = 0; // Minimum color index for raindrops
     std::uint8_t maxColorIndex = kColorRampSize - 1; // Maximum color index for raindrops
-    float maxIntensity = 3.0f; // Maximum intensity of the rain system
-    float intensity = 1.0f; // Current intensity of the rain system, affecting speed and density
+    float maxSpeedMultiplier = 3.0f; // Drop speed multiplier at full rain intensity (EnvironmentState::rainIntensity = 1)
 };
 
 } // namespace liminal

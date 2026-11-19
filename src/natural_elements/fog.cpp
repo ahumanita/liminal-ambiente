@@ -19,16 +19,9 @@ uint8_t randomFogColorIndex(std::uint32_t seed) {
 Fog::Fog(const FogConfig& fogConfig)
     : NaturalElement(fogConfig.x, fogConfig.y, randomFogColorIndex(fogConfig.seed)), config(fogConfig) {}
 
-void Fog::update(float dt) {
-    position.x = position.x + config.speed * dt;
-}
-
-void Fog::setSpeed(float newSpeed) {
-    config.speed = newSpeed;
-}
-
-void Fog::setAlpha(float newAlpha) {
-    config.density = std::clamp(newAlpha, 0.0f, 1.0f);
+void Fog::update(float dt, const EnvironmentState& env) {
+    // The fog bank drifts with the wind
+    position.x = position.x + env.windSpeed * dt;
 }
 
 } // namespace liminal

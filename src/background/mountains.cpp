@@ -44,7 +44,7 @@ void createLayerRidgeLine(MountainLayer& layer, std::size_t numRidgePoints, floa
     layer.ridgeLine = std::move(ridgeLine);
 }
 
-Mountains::Mountains(const WindowProperties& props, const MountainConfig& mountainConfig) : windowProps(props), config(mountainConfig) {
+Mountains::Mountains(const SceneSize& size, const MountainConfig& mountainConfig) : sceneSize(size), config(mountainConfig) {
     if (config.numLayers <= 1 || config.numRidgePoints < 2) {
         std::cerr << "Invalid mountain configuration: numLayers must be > 1 and numRidgePoints must be >= 2." << std::endl;
         return;
@@ -55,10 +55,8 @@ Mountains::Mountains(const WindowProperties& props, const MountainConfig& mounta
         config.numRefinements = 10;
     }
     
-    // Get screen width
-    int screenWidth = windowProps.width;
-    // Compute horizontal spread factor based on number of segments
-    float spread = static_cast<float>(screenWidth) / (config.numRidgePoints - 1);
+    // Compute horizontal spread factor based on number of segments, across the scene (not the window)
+    float spread = sceneSize.width / (config.numRidgePoints - 1);
 
     // One generator for all layers, seeded from the config, so the same config always
     // gives the same mountains. It is passed on by reference: a copy per layer would
@@ -69,7 +67,7 @@ Mountains::Mountains(const WindowProperties& props, const MountainConfig& mounta
         float t = layerIndex / float(config.numLayers - 1); // Normalize layer index
         MountainLayer layer;
         layer.depth = t; // Assign depth for parallax effect
-        layer.elevation = windowProps.height - std::lerp(config.nearElevation, config.farElevation, t); // Interpolate elevation between near and far
+        layer.elevation = sceneSize.height - std::lerp(config.nearElevation, config.farElevation, t); // Interpolate elevation between near and far
         layer.amplitude = std::lerp(config.nearAmplitude, config.farAmplitude, t); // Interpolate amplitude between near and far
         createLayerRidgeLine(layer, config.numRidgePoints, spread, config.midpointDisplacement, config.numRefinements, config.roughness, rng);
         layers.push_back(layer);

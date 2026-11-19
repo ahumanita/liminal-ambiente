@@ -7,7 +7,8 @@ namespace liminal {
 RainDrop::RainDrop(float x, float y, float len, float speed, uint8_t colorIndex)
     : NaturalElement(x, y, colorIndex), len(len), speed(speed) {}
 
-void RainDrop::update(float dt) {
+void RainDrop::update(float dt, const EnvironmentState& env) {
+    (void)env; // The rain system already scales dt by the rain intensity
     position.y += speed * dt;
 }
 
@@ -29,14 +30,12 @@ RainSystem::RainSystem(int screenW, int screenH, const RainConfig& rainConfig)
     }
 }
 
-void RainSystem::setIntensity(float newIntensity) {
-    config.intensity = std::clamp(newIntensity, 0.0f, config.maxIntensity);
-}
-
-void RainSystem::update(float dt) {
-    const float adjustedDt = dt * config.intensity;
+void RainSystem::update(float dt, const EnvironmentState& env) {
+    // Heavier rain makes the drops fall faster, up to the configured multiplier
+    const float intensity = std::clamp(env.rainIntensity, 0.0f, 1.0f);
+    const float adjustedDt = dt * intensity * config.maxSpeedMultiplier;
     for (auto &d : drops) {
-        d.update(adjustedDt);
+        d.update(adjustedDt, env);
         if (d.getPosition().y > height) {
             d.reset(randomFloat(rng, 0.0f, static_cast<float>(width)));
         }

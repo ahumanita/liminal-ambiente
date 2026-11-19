@@ -17,11 +17,11 @@ void Renderer::drawMountains(const Mountains& m, const ScenePalette& palette) co
             // Define corresponding bottom vertices at the bottom of the screen
             Vector2 leftBottom{
                 leftTop.x,
-                static_cast<float>(windowProps.height)
+                sceneSize.height
             };
             Vector2 rightBottom{
                 rightTop.x,
-                static_cast<float>(windowProps.height)
+                sceneSize.height
             };
             // Draw the mountain segment as two triangles
             DrawTriangle(
@@ -41,10 +41,10 @@ void Renderer::drawMountains(const Mountains& m, const ScenePalette& palette) co
 void Renderer::drawSky(const Sky& s, const ScenePalette& palette) const noexcept {
     const auto startHeight = s.getStartHeight();
     // Create a rectangle with a color gradient that is in the background
-    for (int y = startHeight; y < GetScreenHeight(); ++y) {
-        float t = static_cast<float>(y) / GetScreenHeight();
+    for (int y = startHeight; y < sceneSize.height; ++y) {
+        float t = static_cast<float>(y) / sceneSize.height;
         Color blendedColor = lerpColor(palette.skyGradient.colors[0], palette.skyGradient.colors[1], t);
-        DrawLine(0, y, GetScreenWidth(), y, blendedColor);
+        DrawLine(0, y, sceneSize.width, y, blendedColor);
     }
 }
 
@@ -54,7 +54,7 @@ void Renderer::drawGround(const Ground& g, const ScenePalette& palette) const no
     for (int y = 0; y < height; ++y) {
         float t = static_cast<float>(y) / height;
         Color blendedColor = lerpColor(palette.groundGradient.colors[0], palette.groundGradient.colors[1], t);
-        DrawLine(0, GetScreenHeight() - height + y, GetScreenWidth(), GetScreenHeight() - height + y, blendedColor);
+        DrawLine(0, sceneSize.height - height + y, sceneSize.width, sceneSize.height - height + y, blendedColor);
     }
 }
 
@@ -124,18 +124,18 @@ void Renderer::drawForest(const Forest& forest, const ScenePalette& palette) con
     }
 }
 
-void Renderer::drawFog(const Fog& fog, const ScenePalette& palette) const noexcept {
+void Renderer::drawFog(const Fog& fog, const ScenePalette& palette, const EnvironmentState& env) const noexcept {
     const auto colorPaletteIndex = fog.getColorPaletteIndex();
     const auto position = fog.getPosition();
     const auto width = fog.getWidth();
     const auto height = fog.getHeight();
 
     Color color = getColorFromRamp(palette.fogRamp, colorPaletteIndex);
-    color.a = static_cast<unsigned char>(std::clamp(fog.getAlpha() * 255.0f, 0.0f, 255.0f));
+    color.a = static_cast<unsigned char>(std::clamp(env.fogDensity * 255.0f, 0.0f, 255.0f));
     DrawRectangle(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(width), static_cast<int>(height), color);
 }
 
-void Renderer::render(const Scene& scene, const ScenePalette& palette) const noexcept {
+void Renderer::render(const Scene& scene, const ScenePalette& palette, const EnvironmentState& env) const noexcept {
     // Draw the background
     drawSky(scene.sky, palette);
     drawMountains(scene.mountains, palette);
@@ -143,7 +143,7 @@ void Renderer::render(const Scene& scene, const ScenePalette& palette) const noe
     // Draw the natural elements
     drawForest(scene.forest, palette);
     drawRainSystem(scene.rain, palette);
-    drawFog(scene.fog, palette);
+    drawFog(scene.fog, palette, env);
 }
 
 } // namespace liminal

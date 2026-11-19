@@ -9,8 +9,6 @@ struct FogConfig {
     float y = 150.0f; // Vertical position of the fog area (top edge, pixels from the top)
     float width = 400.0f; // Width of the fog area
     float height = 450.0f; // Height of the fog area
-    float speed = 2.0f; // Speed at which the fog moves horizontally
-    float density = 0.5f; // Density of the fog, affecting its opacity
 };
 
 } // namespace liminal
